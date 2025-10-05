@@ -1,74 +1,31 @@
-# VentaPro - Dependencias del Proyecto
-# ====================================
+# VentaPro - Dependencias Principales
+# ===================================
 
-# 🐍 Versión mínima requerida de Python
-python-requires = ">=3.10"
+# Interfaz Grafica Moderna
+customtkinter>=5.2.0
+pywebview>=4.4.0
 
-# 🖥️ Interfaz Gráfica
-tkinter>=8.6          # Viene incluido con Python, pero especificamos versión
-PyQt5>=5.15.7         # Alternativa moderna a Tkinter (opcional)
-customtkinter>=5.2.0  # Tkinter moderno y elegante
+# Base de Datos y Manejo de Datos
+pandas>=1.5.0
 
-# 🗄️ Base de Datos y Manejo de Datos  
-pandas>=2.1.0         # Análisis y manipulación de datos
-sqlite3               # Viene con Python (base de datos local)
-sqlalchemy>=2.0.0     # ORM para manejo avanzado de BD (opcional)
+# Graficos y Visualizacion
+matplotlib>=3.6.0
 
-# 📊 Gráficos y Visualización
-matplotlib>=3.7.0     # Gráficos estadísticos
-seaborn>=0.12.0       # Gráficos estadísticos mejorados
-plotly>=5.15.0        # Gráficos interactivos (opcional)
+# Generacion de PDFs
+reportlab>=3.6.0
+Pillow>=9.0.0
 
-# 📄 Generación de PDFs y Documentos
-reportlab>=4.0.0      # Generación de PDFs profesionales
-fpdf2>=2.7.0          # Generación simple de PDFs (alternativa)
-Pillow>=10.0.0        # Manejo de imágenes para PDFs
+# Exportacion a Excel
+openpyxl>=3.0.0
 
-# 📁 Exportación a Excel
-openpyxl>=3.1.0       # Lectura/escritura de archivos Excel
-xlsxwriter>=3.1.0     # Escritura avanzada de Excel
+# Fechas y Tiempo
+python-dateutil>=2.8.0
 
-# 🕒 Fechas y Tiempo
-python-dateutil>=2.8.0  # Manejo avanzado de fechas
+# Validacion
+validators>=0.20.0
 
-# 📧 Email (Opcional)
-smtplib                # Viene con Python
-email-validator>=2.0.0 # Validación de emails
+# Logging con colores
+colorama>=0.4.6
 
-# 🔐 Validación y Seguridad
-validators>=0.20.0     # Validadores generales
-bcrypt>=4.0.0         # Hash de contraseñas (si se implementa login)
-
-# 📝 Logging y Configuración
-colorama>=0.4.6       # Colores en terminal (Windows)
-python-dotenv>=1.0.0  # Variables de entorno
-configparser          # Viene con Python
-
-# 🧪 Testing (Desarrollo)
-pytest>=7.4.0        # Framework de testing
-pytest-cov>=4.1.0    # Cobertura de código
-
-# 📋 Códigos de Barras (Opcional)
-python-barcode>=0.14.0  # Generación de códigos de barras
-qrcode>=7.4.2           # Generación de códigos QR
-
-# 🌐 Web y APIs (Para reportes HTML)
-jinja2>=3.1.0         # Motor de plantillas
-requests>=2.31.0      # Cliente HTTP
-
-# 🛠️ Utilidades
-pathlib              # Viene con Python (manejo de rutas)
-shutil               # Viene con Python (operaciones de archivos)
-json                 # Viene con Python
-csv                  # Viene con Python
-os                   # Viene con Python
-sys                  # Viene con Python
-datetime             # Viene con Python
-decimal              # Viene con Python (cálculos monetarios precisos)
-
-# 📦 Empaquetado (Para distribución)
-pyinstaller>=5.13.0  # Crear ejecutables
-auto-py-to-exe>=2.40.0  # GUI para PyInstaller
-
-# 🎨 Themes y Estilos (Opcional)
-ttkthemes>=3.2.2      # Temas para Tkinter
+# Motor de plantillas
+jinja2>=3.1.0

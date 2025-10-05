@@ -20,15 +20,30 @@ import os
 ctk.set_appearance_mode("light")  # "light" o "dark"
 ctk.set_default_color_theme("blue")  # "blue", "green", "dark-blue"
 
+# Importar módulos de UI
+try:
+    from .dashboard import Dashboard
+    from .productos import ModuloProductos
+    from .ventas import ModuloVentas
+    from .clientes import ModuloClientes
+    from .reportes import ModuloReportes
+    modulos_disponibles = True
+except ImportError as e:
+    print(f"Algunos módulos de UI no están disponibles: {e}")
+    modulos_disponibles = False
+
 class MainWindow:
     """Ventana principal de la aplicación VentaPro"""
     
     def __init__(self):
+        print("🔧 Inicializando MainWindow...")
         # Crear ventana principal
+        print("📱 Creando CTk...")
         self.root = ctk.CTk()
+        print("✅ CTk creado exitosamente")
         self.root.title("VentaPro - Sistema de Gestión de Ventas e Inventario")
         self.root.geometry("1200x800")
-        self.root.state('zoomed')  # Maximizada en Windows
+        # self.root.state('zoomed')  # Maximizada en Windows - Comentado por compatibilidad
         
         # Variables
         self.modulo_actual = None
@@ -46,32 +61,51 @@ class MainWindow:
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         
         # Inicializar interfaz
+        print("🔧 Creando widgets...")
         self._crear_widgets()
+        print("✅ Widgets creados")
+        
+        print("🔧 Configurando layout...")
         self._configurar_layout()
+        print("✅ Layout configurado")
+        
+        print("🔧 Cargando dashboard...")
         self._cargar_dashboard()
+        print("✅ Dashboard cargado")
     
     def _crear_widgets(self):
         """Crea todos los widgets de la ventana principal"""
         
-        # Frame principal
+        print("    📦 Creando frame principal...")
+        # Frame principal (temporalmente sin parámetros para debug)
         self.main_frame = ctk.CTkFrame(self.root)
+        print("    📦 Frame creado, aplicando pack...")
         self.main_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        print("    ✅ Frame principal configurado")
         
         # Crear barra superior
+        print("  🔧 Creando barra superior...")
         self._crear_barra_superior()
+        print("  ✅ Barra superior creada")
         
         # Crear menú lateral
+        print("  🔧 Creando menú lateral...")
         self._crear_menu_lateral()
+        print("  ✅ Menú lateral creado")
         
         # Crear área de contenido
+        print("  🔧 Creando área de contenido...")
         self._crear_area_contenido()
+        print("  ✅ Área de contenido creada")
         
         # Crear barra de estado
+        print("  🔧 Creando barra de estado...")
         self._crear_barra_estado()
+        print("  ✅ Barra de estado creada")
     
     def _crear_barra_superior(self):
         """Crea la barra superior con logo y información"""
-        self.barra_superior = ctk.CTkFrame(self.main_frame, height=80, corner_radius=10)
+        self.barra_superior = ctk.CTkFrame(self.main_frame, height=80)
         self.barra_superior.pack(fill="x", padx=10, pady=(10, 5))
         self.barra_superior.pack_propagate(False)
         
@@ -115,7 +149,7 @@ class MainWindow:
     
     def _crear_menu_lateral(self):
         """Crea el menú lateral de navegación"""
-        self.menu_lateral = ctk.CTkFrame(self.main_frame, width=250, corner_radius=10)
+        self.menu_lateral = ctk.CTkFrame(self.main_frame)
         self.menu_lateral.pack(side="left", fill="y", padx=(10, 5), pady=5)
         self.menu_lateral.pack_propagate(False)
         
@@ -161,7 +195,7 @@ class MainWindow:
     
     def _crear_area_contenido(self):
         """Crea el área principal donde se cargan los módulos"""
-        self.area_contenido = ctk.CTkFrame(self.main_frame, corner_radius=10)
+        self.area_contenido = ctk.CTkFrame(self.main_frame)
         self.area_contenido.pack(side="right", fill="both", expand=True, padx=5, pady=5)
         
         # Frame para el contenido actual
@@ -170,7 +204,7 @@ class MainWindow:
     
     def _crear_barra_estado(self):
         """Crea la barra de estado en la parte inferior"""
-        self.barra_estado = ctk.CTkFrame(self.main_frame, height=30, corner_radius=5)
+        self.barra_estado = ctk.CTkFrame(self.main_frame, height=30)
         self.barra_estado.pack(fill="x", side="bottom", padx=10, pady=(5, 10))
         self.barra_estado.pack_propagate(False)
         
@@ -207,26 +241,20 @@ class MainWindow:
         self._limpiar_contenido()
         self._actualizar_estado("📊 Cargando Dashboard...")
         
-        try:
-            from ui.dashboard import Dashboard
-            dashboard = Dashboard(self.contenido_frame)
-            self.modulo_actual = dashboard
-            self._actualizar_estado("✅ Dashboard cargado")
-        except ImportError as e:
-            self._mostrar_modulo_placeholder("🏠 Dashboard", 
-                "Panel de control con estadísticas en tiempo real")
+        # Temporalmente usar placeholder para debug
+        self._mostrar_modulo_placeholder("🏠 Dashboard", 
+            "Panel de control con estadísticas en tiempo real")
     
     def _cargar_productos(self):
         """Carga el módulo de productos"""
         self._limpiar_contenido()
         self._actualizar_estado("📦 Cargando módulo de Productos...")
         
-        try:
-            from ui.productos import ModuloProductos
+        if modulos_disponibles:
             productos = ModuloProductos(self.contenido_frame)
             self.modulo_actual = productos
             self._actualizar_estado("✅ Módulo de Productos cargado")
-        except ImportError:
+        else:
             self._mostrar_modulo_placeholder("📦 Gestión de Productos", 
                 "Administración completa del inventario")
     
@@ -235,12 +263,11 @@ class MainWindow:
         self._limpiar_contenido()
         self._actualizar_estado("💰 Cargando Punto de Venta...")
         
-        try:
-            from ui.ventas import PuntoVenta
-            pos = PuntoVenta(self.contenido_frame)
+        if modulos_disponibles:
+            pos = ModuloVentas(self.contenido_frame)
             self.modulo_actual = pos
             self._actualizar_estado("✅ Punto de Venta cargado")
-        except ImportError:
+        else:
             self._mostrar_modulo_placeholder("💰 Punto de Venta", 
                 "Sistema de ventas rápido y eficiente")
     
@@ -249,12 +276,11 @@ class MainWindow:
         self._limpiar_contenido()
         self._actualizar_estado("👥 Cargando módulo de Clientes...")
         
-        try:
-            from ui.clientes import ModuloClientes
+        if modulos_disponibles:
             clientes = ModuloClientes(self.contenido_frame)
             self.modulo_actual = clientes
             self._actualizar_estado("✅ Módulo de Clientes cargado")
-        except ImportError:
+        else:
             self._mostrar_modulo_placeholder("👥 Gestión de Clientes", 
                 "Administración de la base de clientes")
     
@@ -263,12 +289,11 @@ class MainWindow:
         self._limpiar_contenido()
         self._actualizar_estado("📊 Cargando módulo de Reportes...")
         
-        try:
-            from ui.reportes import ModuloReportes
+        if modulos_disponibles:
             reportes = ModuloReportes(self.contenido_frame)
             self.modulo_actual = reportes
             self._actualizar_estado("✅ Módulo de Reportes cargado")
-        except ImportError:
+        else:
             self._mostrar_modulo_placeholder("📊 Reportes y Análisis", 
                 "Gráficos y estadísticas del negocio")
     

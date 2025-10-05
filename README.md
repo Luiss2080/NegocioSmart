@@ -1,23 +1,54 @@
-# 🏪 VentaPro - Sistema de Gestión de Ventas e Inventario
+# � VentaPro - Sistema Universal de Gestión Comercial
 
 ![VentaPro Logo](assets/images/banner.jpg)
 
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)](main.py)
+[![Version](https://img.shields.io/badge/version-2.0.0-brightgreen.svg)](main_mvp.py)
+[![Universal](https://img.shields.io/badge/Universal-All%20Business%20Types-gold.svg)](README.md)
 
 ## 📋 Descripción
 
-**VentaPro** es un sistema completo de punto de venta (POS) y gestión de inventario diseñado específicamente para pequeñas y medianas empresas que necesitan una solución profesional, fácil de usar y sin costos de suscripción.
+**VentaPro** es un **sistema UNIVERSAL** de punto de venta (POS) y gestión de inventario que se adapta a **CUALQUIER TIPO DE NEGOCIO**. Diseñado para pequeñas y medianas empresas que necesitan una solución profesional, completa, fácil de usar y **SIN COSTOS DE SUSCRIPCIÓN**.
 
-### 🎯 Objetivo Principal
+## 🌍 **SISTEMA VERDADERAMENTE UNIVERSAL**
 
-Proporcionar a los comerciantes una herramienta profesional que les permita:
+### 🏪 **Tipos de Negocios Soportados:**
+✅ **Tiendas de Abarrotes** - Control de inventario perecedero y no perecedero  
+✅ **Ferreterías** - Gestión de herramientas, materiales y proveedores  
+✅ **Papelerías** - Artículos de oficina, útiles escolares y suministros  
+✅ **Boutiques de Ropa** - Manejo de tallas, colores, temporadas y marcas  
+✅ **Librerías** - Inventario por ISBN, autores y categorías literarias  
+✅ **Farmacias** - Control de medicamentos, fechas de vencimiento y recetas  
+✅ **Restaurantes** - Menús, ingredientes, comandas y mesas  
+✅ **Talleres Mecánicos** - Servicios, repuestos y mano de obra  
+✅ **Distribuidoras** - Ventas al mayoreo y minoreo con descuentos por volumen  
+✅ **Panaderías** - Productos horneados, ingredientes y producción diaria  
+✅ **Veterinarias** - Servicios médicos, productos y historiales de mascotas  
+✅ **Zapaterías** - Calzado por tallas, marcas y estilos  
+✅ **Perfumerías** - Productos de belleza, marcas y líneas de productos  
+✅ **Electrodomésticos** - Aparatos, garantías y servicios técnicos  
+✅ **Jugueterías** - Juguetes por edades, marcas y categorías  
+✅ **Cualquier Comercio** - **100% Adaptable a sus necesidades**
 
-- ✅ Gestionar su inventario de productos de forma eficiente
-- ✅ Registrar ventas de manera rápida y segura  
-- ✅ Generar facturas profesionales en PDF
-- ✅ Obtener reportes detallados con gráficos visuales
+## 🎯 **Objetivo Principal**
+
+Proporcionar a **CUALQUIER COMERCIANTE** una herramienta profesional que se adapte perfectamente a su industria:
+
+### 💼 **Para Tu Tipo de Negocio:**
+- 📦 **Gestionar inventario** específico (productos físicos, servicios, digitales)
+- 💰 **Procesar ventas** con flujos adaptados a tu industria
+- 📄 **Generar facturas** profesionales personalizadas  
+- 📊 **Obtener reportes** específicos para tu sector
+- ⚠️ **Controlar stock** con alertas inteligentes por industria
+- 📈 **Analizar tendencias** relevantes para tu mercado
+
+### 🌟 **Características Universales:**
+- ✅ **Auto-configuración** según tipo de negocio
+- ✅ **Campos dinámicos** específicos por industria  
+- ✅ **Flujos de trabajo** optimizados
+- ✅ **Reportes especializados** por sector
+- ✅ **Sin límites** de adaptación
 - ✅ Controlar stock y recibir alertas de productos con bajo inventario
 - ✅ Analizar tendencias de ventas y productos más vendidos
 
