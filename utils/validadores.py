@@ -173,7 +173,8 @@ class Validador:
                 return False, "El precio es demasiado alto", None
             
             # Verificar que no tenga más de 2 decimales
-            if precio_decimal.as_tuple().exponent < -2:
+            exponent = precio_decimal.as_tuple().exponent
+            if isinstance(exponent, int) and exponent < -2:
                 return False, "El precio no puede tener más de 2 decimales", None
             
             return True, "Precio válido", precio_decimal
@@ -286,14 +287,18 @@ class ValidadorFormularios:
             errores.append(mensaje)
         
         # Validar precio de compra
-        valido, mensaje, _ = Validador.validar_precio(datos.get('precio_compra'))
-        if not valido:
-            errores.append(f"Precio de compra: {mensaje}")
+        precio_compra = datos.get('precio_compra')
+        if precio_compra is not None:
+            valido, mensaje, _ = Validador.validar_precio(precio_compra)
+            if not valido:
+                errores.append(f"Precio de compra: {mensaje}")
         
         # Validar precio de venta
-        valido, mensaje, _ = Validador.validar_precio(datos.get('precio_venta'))
-        if not valido:
-            errores.append(f"Precio de venta: {mensaje}")
+        precio_venta = datos.get('precio_venta')
+        if precio_venta is not None:
+            valido, mensaje, _ = Validador.validar_precio(precio_venta)
+            if not valido:
+                errores.append(f"Precio de venta: {mensaje}")
         
         # Validar stock actual
         valido, mensaje, _ = Validador.validar_cantidad(datos.get('stock_actual', 0))

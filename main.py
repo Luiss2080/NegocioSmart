@@ -1655,6 +1655,36 @@ class VentaProUniversal:
                            f"⚠️ Productos con stock bajo: {self.stats_dia['stock_bajo']}\n\n"
                            f"✅ Sistema operando normalmente")
     
+    def _calcular_estadisticas(self):
+        """Recalcular estadísticas del sistema"""
+        try:
+            # Calcular total de productos
+            total_productos = len(self.productos)
+            
+            # Calcular productos con stock bajo (menos de 5)
+            stock_bajo = sum(1 for p in self.productos if int(p.get('stock', 0)) < 5)
+            
+            # Actualizar estadísticas
+            self.stats_dia['total_productos'] = total_productos
+            self.stats_dia['stock_bajo'] = stock_bajo
+            
+            # Si estamos en el dashboard, actualizar la vista
+            if hasattr(self, 'modulo_actual') and self.modulo_actual == "dashboard":
+                self._actualizar_dashboard_stats()
+                
+        except Exception as e:
+            print(f"⚠️ Error calculando estadísticas: {e}")
+    
+    def _actualizar_dashboard_stats(self):
+        """Actualizar estadísticas del dashboard si está visible"""
+        try:
+            # Solo actualizar si el dashboard está visible
+            if hasattr(self, 'modulo_actual') and self.modulo_actual == "dashboard":
+                # Aquí podríamos actualizar widgets específicos del dashboard
+                pass
+        except Exception as e:
+            print(f"⚠️ Error actualizando dashboard: {e}")
+    
     # Funcionalidades avanzadas completamente implementadas
     def _gestionar_categorias(self):
         """Gestión completa de categorías"""
@@ -3036,17 +3066,7 @@ class VentaProUniversal:
             font=ctk.CTkFont(size=14, weight="bold")
         ).pack(side="left", padx=10)
     
-    def _reporte_rapido(self):
-        """Generar reporte rápido del día"""
-        messagebox.showinfo(
-            "📊 Reporte del Día", 
-            f"📈 Resumen del día {datetime.now().strftime('%d/%m/%Y')}:\n\n"
-            f"💰 Ventas: {self.config_negocio['moneda']}{self.stats_dia['ventas_total']:.2f}\n"
-            f"🛒 Transacciones: {self.stats_dia['num_ventas']}\n"
-            f"📦 Items vendidos: {self.stats_dia['items_vendidos']}\n"
-            f"👥 Clientes atendidos: {self.stats_dia['clientes_total']}\n\n"
-            f"✅ Sistema funcionando correctamente"
-        )
+
     
     def _guardar_producto_integrado(self):
         """Guardar nuevo producto desde formulario integrado"""
@@ -3393,27 +3413,7 @@ class VentaProUniversal:
         if nombre and contacto:
             messagebox.showinfo("✅ Éxito", f"Proveedor '{nombre}' registrado exitosamente")
     
-    def _mostrar_configuracion(self):
-        """Mostrar configuración del sistema"""
-        self._limpiar_contenido()
-        
-        title = ctk.CTkLabel(
-            self.content_frame,
-            text="⚙️ Configuración del Sistema",
-            font=ctk.CTkFont(size=24, weight="bold")
-        )
-        title.pack(pady=20)
-        
-        config_frame = ctk.CTkFrame(self.content_frame)
-        config_frame.pack(fill="x", padx=20, pady=20)
-        
-        config_info = ctk.CTkLabel(
-            config_frame,
-            text="Panel de configuración del sistema\n\nAquí puedes personalizar:\n• Información del negocio\n• Configuración de impresoras\n• Usuarios y permisos\n• Parámetros del sistema",
-            font=ctk.CTkFont(size=14),
-            justify="left"
-        )
-        config_info.pack(padx=20, pady=20)
+
     
     def _mostrar_ayuda(self):
         """Mostrar ayuda del sistema"""

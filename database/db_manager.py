@@ -22,9 +22,14 @@ class DatabaseManager:
     """Gestor principal de la base de datos SQLite"""
     
     def __init__(self):
-        self.config = ConfigManager()
-        self.logger = Logger()
-        self.db_path = self.config.get('DATABASE', 'db_path', 'data/erp.db')
+        try:
+            self.config = ConfigManager()
+            self.logger = Logger()
+        except Exception:
+            self.config = None
+            self.logger = None
+        
+        self.db_path = self.config.get('DATABASE', 'db_path', 'data/erp.db') if self.config else 'data/erp.db'
         self.connection: Optional[sqlite3.Connection] = None
         
         # Asegurar que el directorio existe
@@ -46,7 +51,8 @@ class DatabaseManager:
             # Configurar WAL mode para mejor concurrencia
             self.connection.execute("PRAGMA journal_mode = WAL")
             
-            self.logger.info("✅ Conexión establecida con la base de datos")
+            if self.logger:
+                self.logger.info("✅ Conexión establecida con la base de datos")
             return True
             
         except sqlite3.Error as e:

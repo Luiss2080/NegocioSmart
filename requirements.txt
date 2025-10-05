@@ -1,22 +1,30 @@
-# VentaPro - Dependencias Principales
-# ===================================
+# VentaPro Universal - Dependencias del Sistema
+# ============================================
 
-# Interfaz Grafica Moderna
+# Interfaz Gráfica Moderna
 customtkinter>=5.2.0
-pywebview>=4.4.0
 
-# Base de Datos y Manejo de Datos
-pandas>=1.5.0
+# Colores en Terminal
+colorama>=0.4.6
 
-# Graficos y Visualizacion
-matplotlib>=3.6.0
+# Base de Datos SQLite (incluida en Python)
+# sqlite3  # Incluida por defecto en Python
 
-# Generacion de PDFs
-reportlab>=3.6.0
-Pillow>=9.0.0
+# Manejo de Fechas y Tiempo (incluidas en Python)
+# datetime  # Incluida por defecto en Python
 
-# Exportacion a Excel
-openpyxl>=3.0.0
+# Manejo de Archivos JSON (incluida en Python)
+# json  # Incluida por defecto en Python
+
+# Sistema Operativo (incluida en Python) 
+# os  # Incluida por defecto en Python
+
+# Dependencias Opcionales para Funcionalidades Avanzadas
+pandas>=1.5.0          # Para análisis avanzado de datos
+matplotlib>=3.6.0      # Para gráficos y visualizaciones
+reportlab>=3.6.0       # Para generación de PDFs
+Pillow>=9.0.0          # Para manejo de imágenes
+openpyxl>=3.0.0        # Para exportación a Excel
 
 # Fechas y Tiempo
 python-dateutil>=2.8.0

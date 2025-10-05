@@ -25,7 +25,6 @@ DB_TIMEOUT = 30.0
 LOG_PATH = "logs/"
 REPORTS_PATH = "reports/"
 ASSETS_PATH = "assets/"
-TEMPLATES_PATH = "templates/"
 
 # Estados de venta
 class EstadoVenta:
