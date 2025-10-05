@@ -702,7 +702,7 @@ class VentaProUniversal:
         )
         quick_title.pack(pady=(15, 10))
         
-        # Botones de acciones rápidas (solo los esenciales)
+        # Botones de acciones rápidas (una sola fila responsiva)
         quick_actions = ctk.CTkFrame(quick_frame, fg_color="transparent")
         quick_actions.pack(fill="x", padx=20, pady=(0, 15))
         
@@ -714,34 +714,23 @@ class VentaProUniversal:
             ("💾 Ver Backups", self._mostrar_backups, "#17a2b8")
         ]
         
+        # Todos los botones en una sola fila responsiva
         for i, (texto, comando, color) in enumerate(quick_buttons):
-            if i < 4:  # Primera fila
-                btn = ctk.CTkButton(
-                    quick_actions,
-                    text=texto,
-                    width=180,
-                    height=35,
-                    fg_color=color,
-                    command=comando,
-                    font=ctk.CTkFont(size=11, weight="bold"),
-                    corner_radius=6
-                )
-                btn.grid(row=0, column=i, padx=5, pady=5)
-            else:  # Segunda fila para el botón de backup
-                btn = ctk.CTkButton(
-                    quick_actions,
-                    text=texto,
-                    width=180,
-                    height=35,
-                    fg_color=color,
-                    command=comando,
-                    font=ctk.CTkFont(size=11, weight="bold"),
-                    corner_radius=6
-                )
-                btn.grid(row=1, column=i-4, padx=5, pady=5)
+            btn = ctk.CTkButton(
+                quick_actions,
+                text=texto,
+                width=150,  # Ancho reducido para que quepan todos
+                height=40,  # Altura ligeramente mayor
+                fg_color=color,
+                command=comando,
+                font=ctk.CTkFont(size=10, weight="bold"),
+                corner_radius=8
+            )
+            btn.grid(row=0, column=i, padx=3, pady=5, sticky="ew")
         
-        for i in range(4):
-            quick_actions.grid_columnconfigure(i, weight=1)
+        # Configurar todas las columnas para que sean responsivas
+        for i in range(len(quick_buttons)):
+            quick_actions.grid_columnconfigure(i, weight=1, uniform="buttons")
         
         # Sección de productos con stock bajo (alerta)
         if self.stats_dia['stock_bajo'] > 0:
