@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}VentaPro{% endblock %}</title>
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/{{ template_css|default('main') }}.css">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="container">
+        {% block header %}
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="../assets/images/logo.png" alt="VentaPro Logo">
+                    <h1>{{ negocio_nombre|default('VentaPro') }}</h1>
+                </div>
+                <div class="business-info">
+                    <p>{{ negocio_direccion|default('') }}</p>
+                    <p>Tel: {{ negocio_telefono|default('') }}</p>
+                    <p>Email: {{ negocio_email|default('') }}</p>
+                </div>
+            </div>
+        </header>
+        {% endblock %}
+
+        <main class="main-content">
+            {% block content %}
+            <p>Contenido base del template</p>
+            {% endblock %}
+        </main>
+
+        {% block footer %}
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2025 {{ negocio_nombre|default('VentaPro') }} - Sistema de Gestión de Ventas</p>
+                <p>Generado el {{ fecha_actual|strftime('%d/%m/%Y %H:%M') }}</p>
+            </div>
+        </footer>
+        {% endblock %}
+    </div>
+
+    <!-- Scripts JavaScript -->
+    <script src="../static/js/main.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

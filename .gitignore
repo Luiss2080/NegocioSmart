@@ -1,0 +1,110 @@
+# Archivos y directorios a ignorar en Git
+# =======================================
+
+# 🐍 Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# 🔧 PyInstaller
+*.manifest
+*.spec
+
+# 📝 Logs y temporales
+*.log
+*.tmp
+*.temp
+temp/
+tmp/
+logs/*.log
+
+# 🗄️ Base de datos y respaldos (excepto estructura)
+data/*.db
+data/backups/*.db
+*.sqlite
+*.sqlite3
+
+# 📊 Reportes generados
+reports/facturas/*.pdf
+reports/excel/*.xlsx
+reports/graficos/*.png
+reports/graficos/*.jpg
+
+# ⚙️ Configuración local
+config_local.ini
+.env
+.env.local
+.env.production
+
+# 💻 IDEs y Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 🪟 Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# 🍎 macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# 🐧 Linux
+*~
+
+# 📁 Directorios de respaldo
+backup/
+backups/
+old/
+
+# 🔒 Archivos sensibles
+passwords.txt
+secrets.txt
+private_key.txt
+
+# 🧪 Testing
+.coverage
+.pytest_cache/
+htmlcov/
+
+# 📦 Distribución
+*.deb
+*.rpm
+*.msi
+*.exe (excepto los de distribución oficial)
+
+# 🎨 Recursos temporales
+*.psd
+*.ai
+*.sketch
+
+# 📧 Email templates compilados
+*.pyc
+
+# Mantener estructura de directorios vacíos
+!.gitkeep
