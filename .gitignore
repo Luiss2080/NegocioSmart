@@ -1,7 +1,9 @@
-# Archivos y directorios a ignorar en Git
-# =======================================
+# VentaPro Universal - .gitignore
+# ===============================
 
 # 🐍 Python
+*.pyc
+*$py.class
 __pycache__/
 *.py[cod]
 *$py.class
@@ -105,6 +107,27 @@ htmlcov/
 
 # 📧 Email templates compilados
 *.pyc
+
+# 📊 VentaPro Universal - Datos específicos
+data/erp.db
+data/backups/*.json
+data/backups/*.csv
+logs/*.log
+
+# 🔑 Archivos de configuración sensibles
+config_local.ini
+.env
+.env.local
+
+# 💾 Archivos temporales del sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 🚀 Archivos de distribución
+dist/
+build/
+*.spec
 
 # Mantener estructura de directorios vacíos
 !.gitkeep

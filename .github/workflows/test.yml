@@ -1,0 +1,100 @@
+name: 🧪 VentaPro Universal - Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: [3.8, 3.9, 3.10, 3.11, 3.12]
+
+    steps:
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v4
+
+    - name: 🐍 Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: ⬆️ Upgrade pip
+      run: |
+        python -m pip install --upgrade pip
+
+    - name: 📦 Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: 🔍 Verify environment
+      run: |
+        python verificar_entorno.py
+
+    - name: 🧪 Test imports
+      run: |
+        python -c "import main; print('✅ Main imports successfully')"
+
+    - name: 📋 List installed packages
+      run: |
+        pip list
+
+    - name: 🏗️ Test application structure
+      run: |
+        python -c "
+        import os
+        required_files = ['main.py', 'requirements.txt', 'README.md']
+        for file in required_files:
+            if os.path.exists(file):
+                print(f'✅ {file} exists')
+            else:
+                print(f'❌ {file} missing')
+                exit(1)
+        "
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v4
+
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: 📦 Install linting tools
+      run: |
+        pip install flake8 pylint
+
+    - name: 🔍 Lint with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v4
+
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: 🔒 Install security tools
+      run: |
+        pip install safety bandit pip-audit
+
+    - name: 🛡️ Check for security vulnerabilities
+      run: |
+        safety check
+        bandit -r . -f json || true
+        pip-audit --desc --format=json || true

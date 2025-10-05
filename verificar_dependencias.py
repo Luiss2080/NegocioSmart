@@ -2,6 +2,7 @@
 """
 VentaPro Universal - Verificador Automático de Dependencias
 Verifica e instala automáticamente las dependencias necesarias
+IMPORTANTE: Usa siempre el entorno virtual .venv
 """
 
 import subprocess

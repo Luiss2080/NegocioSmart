@@ -1,0 +1,35 @@
+{
+    "include": [
+        "."
+    ],
+    "exclude": [
+        "**/__pycache__",
+        ".venv",
+        "**/*.pyc"
+    ],
+    "extraPaths": [
+        ".",
+        "./utils",
+        "./database", 
+        "./ui",
+        "./modules"
+    ],
+    "pythonVersion": "3.12",
+    "pythonPlatform": "Windows",
+    "typeCheckingMode": "off",
+    "reportMissingImports": "warning",
+    "reportMissingTypeStubs": false,
+    "reportOptionalSubscript": false,
+    "reportOptionalMemberAccess": false,
+    "reportOptionalCall": false,
+    "reportOptionalIterable": false,
+    "reportOptionalContextManager": false,
+    "reportOptionalOperand": false,
+    "reportGeneralTypeIssues": "warning",
+    "reportUnknownParameterType": false,
+    "reportUnknownArgumentType": false,
+    "reportUnknownLambdaType": false,
+    "reportUnknownVariableType": false,
+    "reportUnknownMemberType": false,
+    "stubPath": "./.venv/Lib/site-packages"
+}

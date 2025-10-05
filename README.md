@@ -30,23 +30,36 @@
 
 ---
 
-## 🚀 **Inicio Rápido**
+## 🚀 **Inicio Rápido - Instalación en 1 Clic**
 
+### 🪟 **Windows (Súper Fácil):**
 ```bash
 # 1. Clona el repositorio
 git clone https://github.com/Luiss2080/NegocioSmart.git
-
-# 2. Navega al directorio
 cd NegocioSmart
 
-# 3. Instala las dependencias
-pip install -r requirements.txt
+# 2. ¡Doble clic e instala automáticamente!
+instalar.bat
 
-# 4. ¡Ejecuta el sistema!
-python main.py
+# 3. ¡Ejecuta con doble clic!
+INICIAR_VENTAPRO.bat
 ```
 
-**🎉 ¡Listo! Tu sistema estará funcionando en menos de 2 minutos.**
+### 🐧 **Linux/Mac:**
+```bash
+# 1. Clona e instala automáticamente
+git clone https://github.com/Luiss2080/NegocioSmart.git
+cd NegocioSmart
+chmod +x instalar.sh ejecutar.sh
+./instalar.sh
+
+# 2. ¡Ejecuta!
+./ejecutar.sh
+```
+
+**🎉 ¡Listo! Tu sistema estará funcionando en menos de 3 minutos.**
+
+> 📋 **Requisito único:** Python 3.8+ ([Descargar aquí](https://python.org/downloads/))
 
 ---
 

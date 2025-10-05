@@ -1,0 +1,112 @@
+name: 🚀 Release VentaPro Universal
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v4
+
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: 📦 Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: 🔍 Verify build
+      run: |
+        python verificar_entorno.py
+        python -c "import main; print('✅ Build verification successful')"
+
+    - name: 📝 Get release version
+      id: version
+      run: |
+        echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+    - name: 📋 Generate release notes
+      id: release_notes
+      run: |
+        echo "RELEASE_NOTES<<EOF" >> $GITHUB_OUTPUT
+        echo "## 🎉 VentaPro Universal ${{ steps.version.outputs.VERSION }}" >> $GITHUB_OUTPUT
+        echo "" >> $GITHUB_OUTPUT
+        echo "### ✨ Nuevas Características:" >> $GITHUB_OUTPUT
+        echo "- Sistema de gestión comercial universal" >> $GITHUB_OUTPUT
+        echo "- Interfaz moderna con CustomTkinter" >> $GITHUB_OUTPUT
+        echo "- Base de datos SQLite integrada" >> $GITHUB_OUTPUT
+        echo "- Sistema de backup automático" >> $GITHUB_OUTPUT
+        echo "" >> $GITHUB_OUTPUT
+        echo "### 📦 Instalación:" >> $GITHUB_OUTPUT
+        echo "\`\`\`bash" >> $GITHUB_OUTPUT
+        echo "# Windows" >> $GITHUB_OUTPUT
+        echo "instalar.bat" >> $GITHUB_OUTPUT
+        echo "" >> $GITHUB_OUTPUT
+        echo "# Linux/Mac" >> $GITHUB_OUTPUT
+        echo "./instalar.sh" >> $GITHUB_OUTPUT
+        echo "\`\`\`" >> $GITHUB_OUTPUT
+        echo "" >> $GITHUB_OUTPUT
+        echo "### 📋 Requisitos:" >> $GITHUB_OUTPUT
+        echo "- Python 3.8+" >> $GITHUB_OUTPUT
+        echo "- 4GB RAM mínimo" >> $GITHUB_OUTPUT
+        echo "- 500MB espacio libre" >> $GITHUB_OUTPUT
+        echo "" >> $GITHUB_OUTPUT
+        echo "Ver [CHANGELOG.md](./CHANGELOG.md) para detalles completos." >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+
+    - name: 📦 Create release archive
+      run: |
+        # Crear archivo ZIP excluyendo archivos innecesarios
+        zip -r "VentaPro-Universal-${{ steps.version.outputs.VERSION }}.zip" . \
+          -x "*.git*" "*/__pycache__/*" "*.pyc" ".venv/*" "data/erp.db" "logs/*"
+
+    - name: 🚀 Create GitHub Release
+      uses: actions/create-release@v1
+      id: create_release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.version.outputs.VERSION }}
+        release_name: 🏪 VentaPro Universal ${{ steps.version.outputs.VERSION }}
+        body: ${{ steps.release_notes.outputs.RELEASE_NOTES }}
+        draft: false
+        prerelease: false
+
+    - name: 📤 Upload release archive
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./VentaPro-Universal-${{ steps.version.outputs.VERSION }}.zip
+        asset_name: VentaPro-Universal-${{ steps.version.outputs.VERSION }}.zip
+        asset_content_type: application/zip
+
+    - name: 📤 Upload Windows installer
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./instalar.bat
+        asset_name: instalar-windows.bat
+        asset_content_type: application/octet-stream
+
+    - name: 📤 Upload Linux/Mac installer
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./instalar.sh
+        asset_name: instalar-linux-mac.sh
+        asset_content_type: application/octet-stream

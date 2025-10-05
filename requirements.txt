@@ -7,6 +7,9 @@ customtkinter>=5.2.0
 # Colores en Terminal
 colorama>=0.4.6
 
+# Gráficos y Reportes
+matplotlib>=3.9.0
+
 # Base de Datos SQLite (incluida en Python)
 # sqlite3  # Incluida por defecto en Python
 
