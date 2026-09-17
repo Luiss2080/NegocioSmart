@@ -11,8 +11,22 @@ Fecha: 2025-10-04
 
 from dataclasses import dataclass, field
 from datetime import datetime
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 from typing import Optional, List
+
+CENTAVO = Decimal('0.01')
+
+
+def _redondear_centavos(valor: Decimal) -> Decimal:
+    """Redondea un Decimal a 2 decimales (centavos) con HALF_UP.
+
+    Usar Decimal.quantize en cada punto en que un monto se "cierra"
+    (subtotal de línea, impuestos, total) evita que se arrastren
+    residuos binarios como los que produce el float nativo de Python
+    (p. ej. 0.1 + 0.2 == 0.30000000000000004). Con Decimal + quantize
+    el resultado siempre es exacto a 2 decimales.
+    """
+    return valor.quantize(CENTAVO, rounding=ROUND_HALF_UP)
 
 @dataclass
 class Categoria:
@@ -91,8 +105,27 @@ class DetalleVenta:
     producto: Optional[Producto] = None
     
     def calcular_subtotal(self) -> Decimal:
-        """Calcula el subtotal de la línea"""
-        subtotal = (self.precio_unitario * self.cantidad) - self.descuento_linea
+        """Calcula el subtotal de la línea.
+
+        Casos límite manejados explícitamente para que una venta nunca
+        quede con montos inconsistentes:
+
+        - Cantidad negativa o cero: no representa una venta real (una
+          cantidad negativa "vendería al revés" y devolvería dinero sin
+          pasar por un flujo de devolución explícito), así que se trata
+          como 0 unidades.
+        - Descuento de línea mayor al importe de la línea (por ejemplo
+          un descuento del 150%, o un error de captura): se limita
+          ("clampa") al importe bruto de la línea para que el subtotal
+          nunca sea negativo. Un descuento igual al importe bruto
+          (100%) es válido y da subtotal 0.
+        """
+        cantidad = self.cantidad if self.cantidad > 0 else 0
+        importe_bruto = self.precio_unitario * cantidad
+        descuento = self.descuento_linea if self.descuento_linea > 0 else Decimal('0.00')
+        descuento_aplicado = min(descuento, importe_bruto)
+
+        subtotal = _redondear_centavos(importe_bruto - descuento_aplicado)
         self.subtotal_linea = subtotal
         return subtotal
 
@@ -115,15 +148,37 @@ class Venta:
     cliente: Optional[Cliente] = None
     detalles: List[DetalleVenta] = field(default_factory=list)
     
-    def calcular_totales(self):
-        """Calcula los totales de la venta"""
-        self.subtotal = sum(detalle.subtotal_linea for detalle in self.detalles)
-        # Aplicar descuento general si existe
+    def calcular_totales(self, tasa_impuesto: Decimal = Decimal('0.16')):
+        """Calcula los totales de la venta.
+
+        Args:
+            tasa_impuesto: tasa de impuesto a aplicar sobre el subtotal
+                con descuento (por defecto 16%, IVA típico). Se recibe
+                como parámetro en vez de quedar fijo en el código para
+                que quien arme la venta pueda usar la tasa configurada
+                del negocio (ver ``configuracion``/``config.ini``:
+                ``tax_rate``) en lugar de un valor hardcodeado.
+
+        Casos límite manejados:
+        - Un descuento general mayor al subtotal (p. ej. una promoción
+          mal aplicada, o 100%+ de descuento) se limita al subtotal:
+          nunca se cobran impuestos sobre un monto negativo, y el total
+          nunca puede quedar por debajo de 0.
+        - Todos los montos intermedios se redondean a centavos con
+          Decimal.quantize (ROUND_HALF_UP) para que el total sea
+          siempre exacto, sin arrastre de errores de punto flotante.
+        """
+        self.subtotal = _redondear_centavos(
+            sum((detalle.subtotal_linea for detalle in self.detalles), Decimal('0.00'))
+        )
+
+        # Un descuento general nunca puede exceder el subtotal ni ser negativo.
+        descuento = self.descuento if self.descuento > 0 else Decimal('0.00')
+        self.descuento = min(descuento, self.subtotal)
+
         subtotal_con_descuento = self.subtotal - self.descuento
-        # Calcular impuestos (IVA 16%)
-        self.impuestos = subtotal_con_descuento * Decimal('0.16')
-        # Total final
-        self.total = subtotal_con_descuento + self.impuestos
+        self.impuestos = _redondear_centavos(subtotal_con_descuento * tasa_impuesto)
+        self.total = _redondear_centavos(subtotal_con_descuento + self.impuestos)
     
     @property
     def cantidad_productos(self) -> int:
