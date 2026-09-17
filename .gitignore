@@ -1,4 +1,4 @@
-# VentaPro Universal - .gitignore
+# NegocioSmart - .gitignore
 # ===============================
 
 # 🐍 Python
@@ -108,7 +108,7 @@ htmlcov/
 # 📧 Email templates compilados
 *.pyc
 
-# 📊 VentaPro Universal - Datos específicos
+# 📊 NegocioSmart - Datos específicos
 data/erp.db
 data/backups/*.json
 data/backups/*.csv

@@ -1,4 +1,4 @@
-# VentaPro Universal
+# NegocioSmart
 __version__ = "1.0.0"
 __author__ = "Luiss2080"
 __email__ = "github@luiss2080.dev"
@@ -6,7 +6,7 @@ __license__ = "MIT"
 __description__ = "Sistema Universal de Gestión Comercial"
 
 # Configuración de la aplicación
-APP_NAME = "VentaPro Universal"
+APP_NAME = "NegocioSmart"
 APP_VERSION = __version__
 APP_AUTHOR = __author__
 APP_LICENSE = __license__

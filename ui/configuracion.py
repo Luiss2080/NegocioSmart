@@ -1,5 +1,5 @@
 """
-Módulo de Configuración para VentaPro Universal
+Módulo de Configuración para NegocioSmart
 Interfaz de configuración avanzada del sistema
 """
 

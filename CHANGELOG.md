@@ -1,4 +1,4 @@
-# VentaPro Universal - Historial de Versiones
+# NegocioSmart - Historial de Versiones
 
 ## 🚀 Versión 1.0.0 - Release Inicial (Octubre 2025)
 
@@ -23,7 +23,7 @@
 - 🧠 **Business Intelligence** - Analytics avanzados
 
 ### 📦 **Archivos del Release:**
-- `VentaPro-Universal-v1.0.0.zip` - Código completo
+- `NegocioSmart-Universal-v1.0.0.zip` - Código completo
 - `instalar.bat` - Instalador automático Windows
 - `instalar.sh` - Instalador automático Linux/Mac
 - `INSTALACION.md` - Guía de instalación detallada

@@ -14,7 +14,7 @@ sys.path.insert(0, current_dir)
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("blue")
 
-# Importar dependencias de VentaPro
+# Importar dependencias de NegocioSmart
 try:
     from database.db_manager import DatabaseManager
     from utils.logger import Logger
@@ -31,8 +31,8 @@ except ImportError as e:
     logger_disponible = False
     backup_disponible = False
 
-class VentaProUniversal:
-    """Sistema Universal de Gestión Comercial VentaPro"""
+class NegocioSmartApp:
+    """Sistema Universal de Gestión Comercial NegocioSmart"""
     
     def __init__(self):
         # Configuración del negocio (se puede personalizar)
@@ -53,7 +53,7 @@ class VentaProUniversal:
         
         # Crear ventana principal
         self.root = ctk.CTk()
-        self.root.title(f"VentaPro Universal - {self.config_negocio['nombre']}")
+        self.root.title(f"NegocioSmart - {self.config_negocio['nombre']}")
         self.root.geometry("1200x800")
         
         # Variables de estado
@@ -67,7 +67,7 @@ class VentaProUniversal:
         # Inicializar logger si está disponible
         if logger_disponible:
             self.logger = Logger()
-            self.logger.info("🚀 VentaPro Universal iniciado correctamente")
+            self.logger.info("🚀 NegocioSmart iniciado correctamente")
         
         # Inicializar sistema de backup si está disponible
         if backup_disponible:
@@ -222,7 +222,7 @@ class VentaProUniversal:
         # Título responsive
         self.sidebar_title = ctk.CTkLabel(
             self.sidebar_header,
-            text="VentaPro",
+            text="NegocioSmart",
             font=ctk.CTkFont(size=14, weight="bold"),
             text_color=self.sidebar_config['color_text']
         )
@@ -475,7 +475,7 @@ class VentaProUniversal:
         
         business_type = ctk.CTkLabel(
             business_frame,
-            text=f"📋 {self.config_negocio['tipo']} | Sistema Universal VentaPro",
+            text=f"📋 {self.config_negocio['tipo']} | Sistema Universal NegocioSmart",
             font=ctk.CTkFont(size=12),
             text_color="gray"
         )
@@ -575,7 +575,7 @@ class VentaProUniversal:
         # Estado del sistema (izquierda)
         self.status_label = ctk.CTkLabel(
             footer_frame,
-            text="✅ Sistema VentaPro Universal - Operativo",
+            text="✅ Sistema NegocioSmart - Operativo",
             font=ctk.CTkFont(size=12),
             text_color="green"
         )
@@ -2495,7 +2495,7 @@ class VentaProUniversal:
         self.config_negocio['moneda'] = self.moneda_combo.get()
         
         # Actualizar título de la ventana
-        self.root.title(f"VentaPro Universal - {self.config_negocio['nombre']}")
+        self.root.title(f"NegocioSmart - {self.config_negocio['nombre']}")
         
         messagebox.showinfo("Configuración", "✅ Configuración guardada exitosamente\n\n🔄 Algunos cambios requieren reiniciar la aplicación")
     
@@ -3407,7 +3407,7 @@ class VentaProUniversal:
     def _mostrar_ayuda(self):
         """Mostrar ayuda del sistema"""
         help_text = f"""
-        VentaPro Universal - Sistema de Gestión
+        NegocioSmart - Sistema de Gestión
         
         Navegación:
         • Use el menú lateral para navegar entre módulos
@@ -3430,7 +3430,7 @@ class VentaProUniversal:
         
         Para soporte técnico, contacte al administrador del sistema.
         """
-        messagebox.showinfo("Ayuda - VentaPro Universal", help_text)
+        messagebox.showinfo("Ayuda - NegocioSmart", help_text)
     
     def _confirmar_salida(self):
         """Confirmar salida del sistema"""
@@ -3663,7 +3663,7 @@ def main():
     """Función principal"""
     try:
         # Mensaje de inicio
-        print("🌍 Iniciando VentaPro Universal - Sistema para TODO tipo de negocio...")
+        print("🌍 Iniciando NegocioSmart - Sistema para TODO tipo de negocio...")
         
         # Inicializar base de datos si está disponible
         if db_disponible:
@@ -3674,9 +3674,9 @@ def main():
                 print("⚠️ Ejecutando con datos simulados")
         
         # Crear y ejecutar aplicación
-        app = VentaProUniversal()
+        app = NegocioSmartApp()
         
-        print("🚀 VentaPro Universal iniciado exitosamente")
+        print("🚀 NegocioSmart iniciado exitosamente")
         print("🎯 Sistema adaptable a cualquier tipo de negocio")
         print("✨ ¡Listo para gestionar tu comercio!")
         
@@ -3690,7 +3690,7 @@ def main():
     
     return True
 
-# Funciones de integración con módulos avanzados para VentaProUniversal
+# Funciones de integración con módulos avanzados para NegocioSmartApp
 def mostrar_proveedores_avanzado(root, config_negocio):
     """Lanzar módulo completo de proveedores"""
     try:
@@ -3759,5 +3759,5 @@ def mostrar_reportes_avanzados(root, productos, ventas, config_negocio):
 
 if __name__ == "__main__":
     success = main()
-    print("\n🎉 VentaPro Universal terminado" if success else "\n❌ Error al ejecutar VentaPro Universal")
+    print("\n🎉 NegocioSmart terminado" if success else "\n❌ Error al ejecutar NegocioSmart")
     sys.exit(0 if success else 1)

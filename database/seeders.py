@@ -1,11 +1,11 @@
 """
-Seeders - Datos de Prueba e Iniciales - VentaPro
+Seeders - Datos de Prueba e Iniciales - NegocioSmart
 ================================================
 
 Proporciona datos de prueba y configuración inicial para el sistema.
 Útil para desarrollo, testing y demostración.
 
-Autor: Sistema VentaPro
+Autor: Sistema NegocioSmart
 Fecha: 2025-10-04
 """
 
@@ -262,10 +262,10 @@ class SeederUsuarios(Seeder):
         try:
             # Nota: En producción, las contraseñas deberían estar hasheadas
             usuarios = [
-                ('admin', 'admin123', 'Administrador del Sistema', 'admin@ventapro.com', 'admin'),
-                ('vendedor1', 'vendedor123', 'Juan Vendedor', 'vendedor1@ventapro.com', 'vendedor'),
-                ('supervisor1', 'supervisor123', 'María Supervisora', 'supervisor@ventapro.com', 'supervisor'),
-                ('cajero1', 'cajero123', 'Pedro Cajero', 'cajero1@ventapro.com', 'vendedor')
+                ('admin', 'admin123', 'Administrador del Sistema', 'admin@negociosmart.com', 'admin'),
+                ('vendedor1', 'vendedor123', 'Juan Vendedor', 'vendedor1@negociosmart.com', 'vendedor'),
+                ('supervisor1', 'supervisor123', 'María Supervisora', 'supervisor@negociosmart.com', 'supervisor'),
+                ('cajero1', 'cajero123', 'Pedro Cajero', 'cajero1@negociosmart.com', 'vendedor')
             ]
             
             for usuario, password, nombre, email, rol in usuarios:

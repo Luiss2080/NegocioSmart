@@ -1,11 +1,11 @@
 """
-Gestor Principal de Base de Datos - VentaPro
+Gestor Principal de Base de Datos - NegocioSmart
 ===========================================
 
-Maneja todas las operaciones de base de datos SQLite para el sistema VentaPro.
+Maneja todas las operaciones de base de datos SQLite para el sistema NegocioSmart.
 Incluye creación de tablas, conexiones, transacciones y mantenimiento.
 
-Autor: Sistema VentaPro
+Autor: Sistema NegocioSmart
 Fecha: 2025-10-04
 """
 

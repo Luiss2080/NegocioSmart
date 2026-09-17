@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-VentaPro Universal - Verificador Automático de Dependencias
+NegocioSmart - Verificador Automático de Dependencias
 Verifica e instala automáticamente las dependencias necesarias
 IMPORTANTE: Usa siempre el entorno virtual .venv
 """
@@ -20,7 +20,7 @@ def install_package(package):
 def check_and_install_dependencies():
     """Verifica e instala las dependencias necesarias"""
     
-    print("🔍 Verificando dependencias de VentaPro Universal...")
+    print("🔍 Verificando dependencias de NegocioSmart...")
     
     # Lista de dependencias requeridas
     required_packages = [
@@ -60,7 +60,7 @@ def main():
     """Función principal"""
     
     print("=" * 60)
-    print("🚀 VENTAPRO UNIVERSAL - VERIFICADOR DE DEPENDENCIAS")  
+    print("🚀 NEGOCIOSMART UNIVERSAL - VERIFICADOR DE DEPENDENCIAS")  
     print("=" * 60)
     
     # Verificar Python 3.7+
@@ -79,8 +79,8 @@ def main():
     print("\n" + "=" * 60)
     print("🎯 SISTEMA LISTO PARA EJECUTAR")
     print("=" * 60)
-    print("➡️  Para iniciar VentaPro: python main.py")
-    print("➡️  O usar el archivo: INICIAR_VENTAPRO.bat")
+    print("➡️  Para iniciar NegocioSmart: python main.py")
+    print("➡️  En Linux/Mac también puedes usar: ./ejecutar.sh")
     print("=" * 60)
     
     return True

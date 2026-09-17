@@ -1,6 +1,6 @@
-# 🤝 Guía de Contribución - VentaPro Universal
+# 🤝 Guía de Contribución - NegocioSmart
 
-¡Gracias por tu interés en contribuir a VentaPro Universal! 🎉
+¡Gracias por tu interés en contribuir a NegocioSmart! 🎉
 
 ## 🚀 **Cómo Contribuir**
 
@@ -124,7 +124,7 @@ Los contribuidores serán reconocidos en:
 
 ## 📞 **Contacto y Ayuda**
 
-- 💬 **Discord:** [Únete a la comunidad](https://discord.gg/ventapro)
+- 💬 **Discord:** [Únete a la comunidad](https://discord.gg/negociosmart)
 - 📧 **Email:** [Contactar mantenedor](mailto:github@luiss2080.dev)
 - 🐛 **Issues:** [GitHub Issues](https://github.com/Luiss2080/NegocioSmart/issues)
 - 💡 **Discusiones:** [GitHub Discussions](https://github.com/Luiss2080/NegocioSmart/discussions)
@@ -147,7 +147,7 @@ Antes de enviar tu PR, asegúrate de:
 
 ## 🎉 **¡Gracias por Contribuir!**
 
-Tu contribución hace que VentaPro Universal sea mejor para todos los pequeños negocios del mundo. ¡Cada línea de código cuenta! 🚀
+Tu contribución hace que NegocioSmart sea mejor para todos los pequeños negocios del mundo. ¡Cada línea de código cuenta! 🚀
 
 ---
 

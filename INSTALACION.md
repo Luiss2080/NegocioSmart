@@ -1,11 +1,14 @@
 # 🚀 **GUÍA DE INSTALACIÓN RÁPIDA**
 
-## ⚡ **INSTALACIÓN EN 1 CLIC**
+## ⚡ **INSTALACIÓN RÁPIDA**
 
 ### 🪟 **Windows:**
-1. Descarga el proyecto desde GitHub
-2. **Doble clic en:** `instalar.bat`
-3. **Para ejecutar:** `INICIAR_VENTAPRO.bat`
+```cmd
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+python main.py
+```
 
 ### 🐧 **Linux/Mac:**
 ```bash
@@ -43,28 +46,32 @@ git clone https://github.com/Luiss2080/NegocioSmart.git
 cd NegocioSmart
 ```
 
-### 2️⃣ **Ejecutar Instalador:**
+### 2️⃣ **Crear entorno virtual e instalar dependencias:**
 
 **Windows:**
 ```cmd
-instalar.bat
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
 ```
 
 **Linux/Mac:**
 ```bash
-chmod +x instalar.sh
-./instalar.sh
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 ```
 
 ### 3️⃣ **Ejecutar la Aplicación:**
 
 **Windows:**
 ```cmd
-INICIAR_VENTAPRO.bat
+python main.py
 ```
 
-**Linux/Mac:**
+**Linux/Mac (usa el script incluido, que activa el entorno virtual automáticamente):**
 ```bash
+chmod +x ejecutar.sh
 ./ejecutar.sh
 ```
 
@@ -102,7 +109,7 @@ Después de la instalación, deberías ver:
 
 ```
 🎉 ¡ENTORNO COMPLETAMENTE FUNCIONAL!
-📋 VentaPro Universal listo para ejecutar
+📋 NegocioSmart listo para ejecutar
 ```
 
 ---
@@ -118,7 +125,7 @@ Después de la instalación, deberías ver:
 - **Intenta:** Ejecutar como administrador
 
 ### ❌ **"Entorno virtual no encontrado"**
-- **Solución:** Ejecuta primero el instalador
+- **Solución:** Créalo con `python -m venv .venv` y actívalo antes de instalar dependencias
 - **Verifica:** Que existe la carpeta `.venv`
 
 ### ❌ **"CustomTkinter no funciona"**

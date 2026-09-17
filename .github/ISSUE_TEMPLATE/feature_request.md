@@ -1,6 +1,6 @@
 ---
 name: ✨ Solicitud de Característica
-about: Sugiere una idea para VentaPro Universal
+about: Sugiere una idea para NegocioSmart
 title: '[FEATURE] '
 labels: ['enhancement', 'triage']
 assignees: ['Luiss2080']
@@ -27,7 +27,7 @@ Una descripción de cualquier solución o característica alternativa que hayas 
 
 ## 📊 **Impacto Estimado**
 ¿Qué tan importante es esta característica para tu negocio?
-- [ ] 🔥 Crítica - Sin esto no puedo usar VentaPro
+- [ ] 🔥 Crítica - Sin esto no puedo usar NegocioSmart
 - [ ] ⚡ Alta - Mejoraría significativamente mi flujo de trabajo
 - [ ] 📈 Media - Sería una buena adición
 - [ ] 💡 Baja - Sería interesante tener

@@ -1,11 +1,11 @@
 """
-Modelos de Datos - VentaPro
+Modelos de Datos - NegocioSmart
 ===========================
 
 Define las clases/modelos de datos que representan las entidades
 del sistema de gestión de ventas e inventario.
 
-Autor: Sistema VentaPro
+Autor: Sistema NegocioSmart
 Fecha: 2025-10-04
 """
 

@@ -1,11 +1,11 @@
 """
-Sistema de Backup Automático - VentaPro Universal
+Sistema de Backup Automático - NegocioSmart
 ================================================
 
 Gestiona backups automáticos de todos los datos del sistema en archivos JSON/CSV
 separados por tipo de información dentro de la carpeta backups.
 
-Autor: Sistema VentaPro
+Autor: Sistema NegocioSmart
 Fecha: 2025-10-05
 """
 

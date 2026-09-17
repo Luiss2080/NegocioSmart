@@ -1,5 +1,5 @@
 """
-Modelos de Datos Universales - VentaPro
+Modelos de Datos Universales - NegocioSmart
 =======================================
 
 Modelos de base de datos adaptables a cualquier tipo de negocio.
@@ -14,7 +14,7 @@ Características Universales:
 - ✅ Control de stock avanzado
 - ✅ Trazabilidad completa
 
-Autor: Sistema VentaPro Universal
+Autor: Sistema NegocioSmart
 Fecha: 2025-01-04
 """
 

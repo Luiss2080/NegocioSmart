@@ -1,5 +1,5 @@
 """
-VentaPro Universal - Módulo Avanzado de Inventario
+NegocioSmart - Módulo Avanzado de Inventario
 =================================================
 
 Sistema completo de control de inventario con alertas automáticas,
@@ -14,7 +14,7 @@ Características:
 - ✅ Inventarios físicos y ajustes
 - ✅ Reportes avanzados de rotación
 
-Autor: VentaPro Universal
+Autor: NegocioSmart
 Fecha: 2025-01-04
 """
 
@@ -1030,7 +1030,7 @@ def integrar_con_sistema_principal(main_app, gestor_inventario):
 if __name__ == "__main__":
     # Demo independiente
     root = ctk.CTk()
-    root.title("VentaPro Universal - Control de Inventario")
+    root.title("NegocioSmart - Control de Inventario")
     root.geometry("1200x800")
     
     gestor = crear_gestor_inventario()

@@ -1,11 +1,11 @@
 """
-Consultas SQL Complejas - VentaPro
+Consultas SQL Complejas - NegocioSmart
 ==================================
 
 Define consultas SQL complejas y procedimientos almacenados
 para análisis, reportes y operaciones avanzadas.
 
-Autor: Sistema VentaPro
+Autor: Sistema NegocioSmart
 Fecha: 2025-10-04
 """
 
@@ -13,7 +13,7 @@ from typing import Dict, List, Any, Optional
 from datetime import datetime, timedelta
 
 class ConsultasSQL:
-    """Colección de consultas SQL complejas para VentaPro"""
+    """Colección de consultas SQL complejas para NegocioSmart"""
     
     @staticmethod
     def productos_stock_bajo() -> str:

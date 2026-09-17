@@ -1,5 +1,5 @@
 """
-Módulo de Usuarios para VentaPro Universal
+Módulo de Usuarios para NegocioSmart
 Gestión de usuarios y permisos del sistema
 """
 

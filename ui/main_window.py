@@ -1,11 +1,11 @@
 """
-Ventana Principal - VentaPro
+Ventana Principal - NegocioSmart
 ===========================
 
 Ventana principal del sistema que contiene el menú, barra de herramientas
 y el área de trabajo donde se cargan los diferentes módulos.
 
-Autor: Sistema VentaPro
+Autor: Sistema NegocioSmart
 Fecha: 2025-10-04
 """
 
@@ -33,7 +33,7 @@ except ImportError as e:
     modulos_disponibles = False
 
 class MainWindow:
-    """Ventana principal de la aplicación VentaPro"""
+    """Ventana principal de la aplicación NegocioSmart"""
     
     def __init__(self):
         print("🔧 Inicializando MainWindow...")
@@ -41,7 +41,7 @@ class MainWindow:
         print("📱 Creando CTk...")
         self.root = ctk.CTk()
         print("✅ CTk creado exitosamente")
-        self.root.title("VentaPro - Sistema de Gestión de Ventas e Inventario")
+        self.root.title("NegocioSmart - Sistema de Gestión de Ventas e Inventario")
         self.root.geometry("1200x800")
         # self.root.state('zoomed')  # Maximizada en Windows - Comentado por compatibilidad
         
@@ -115,7 +115,7 @@ class MainWindow:
         
         self.titulo_principal = ctk.CTkLabel(
             self.titulo_frame, 
-            text="🏪 VentaPro", 
+            text="🏪 NegocioSmart", 
             font=ctk.CTkFont(size=24, weight="bold")
         )
         self.titulo_principal.pack(side="top", anchor="w")
@@ -217,7 +217,7 @@ class MainWindow:
         
         self.version_label = ctk.CTkLabel(
             self.barra_estado, 
-            text="VentaPro v1.0.0",
+            text="NegocioSmart v1.0.0",
             font=ctk.CTkFont(size=10),
             text_color="gray"
         )
@@ -389,7 +389,7 @@ class MainWindow:
     
     def on_closing(self):
         """Maneja el evento de cierre de la aplicación"""
-        if messagebox.askyesno("Salir", "¿Está seguro que desea salir de VentaPro?"):
+        if messagebox.askyesno("Salir", "¿Está seguro que desea salir de NegocioSmart?"):
             try:
                 # Aquí se pueden hacer tareas de limpieza
                 # Como cerrar conexiones de BD, guardar configuración, etc.

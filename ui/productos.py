@@ -1,10 +1,10 @@
 """
-Módulo de Productos - VentaPro
+Módulo de Productos - NegocioSmart
 =============================
 
 Interfaz para la gestión completa de productos e inventario.
 
-Autor: Sistema VentaPro
+Autor: Sistema NegocioSmart
 Fecha: 2025-10-04
 """
 

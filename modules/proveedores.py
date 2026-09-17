@@ -1,5 +1,5 @@
 """
-VentaPro Universal - Módulo de Gestión de Proveedores
+NegocioSmart - Módulo de Gestión de Proveedores
 ====================================================
 
 Sistema completo para gestionar proveedores, compras e inventarios.
@@ -13,7 +13,7 @@ Características:
 - ✅ Alertas de reposición automática
 - ✅ Comparativa de precios
 
-Autor: VentaPro Universal
+Autor: NegocioSmart
 Fecha: 2025-01-04
 """
 
@@ -662,7 +662,7 @@ def integrar_con_sistema_principal(main_app, gestor_proveedores):
 if __name__ == "__main__":
     # Demo independiente
     root = ctk.CTk()
-    root.title("VentaPro Universal - Gestión de Proveedores")
+    root.title("NegocioSmart - Gestión de Proveedores")
     root.geometry("1000x700")
     
     gestor = crear_gestor_proveedores()

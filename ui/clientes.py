@@ -1,10 +1,10 @@
 """
-Módulo de Clientes - VentaPro
+Módulo de Clientes - NegocioSmart
 =============================
 
 Interfaz para la gestión de clientes.
 
-Autor: Sistema VentaPro
+Autor: Sistema NegocioSmart
 Fecha: 2025-10-04
 """
 

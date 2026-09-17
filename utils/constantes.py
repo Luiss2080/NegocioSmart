@@ -1,20 +1,20 @@
 """
-Constantes del Sistema - VentaPro
+Constantes del Sistema - NegocioSmart
 ================================
 
 Define todas las constantes utilizadas en el sistema.
 Centraliza valores como códigos de estado, mensajes, configuraciones por defecto, etc.
 
-Autor: Sistema VentaPro
+Autor: Sistema NegocioSmart
 Fecha: 2025-10-04
 """
 
 # Información de la aplicación
-APP_NAME = "VentaPro"
+APP_NAME = "NegocioSmart"
 APP_VERSION = "1.0.0"
 APP_DESCRIPTION = "Sistema de Gestión de Ventas e Inventario"
-APP_AUTHOR = "VentaPro Team"
-APP_WEBSITE = "https://ventapro.com"
+APP_AUTHOR = "NegocioSmart Team"
+APP_WEBSITE = "https://github.com/Luiss2080/NegocioSmart"
 
 # Configuración de base de datos
 DEFAULT_DB_PATH = "data/erp.db"
@@ -169,7 +169,7 @@ class Validacion:
 
 # Configuración de la ventana principal
 class VentanaConfig:
-    TITULO = "VentaPro - Sistema de Gestión de Ventas e Inventario"
+    TITULO = "NegocioSmart - Sistema de Gestión de Ventas e Inventario"
     ICONO = "assets/images/icon.ico"
     MENU_WIDTH = 250
     TOOLBAR_HEIGHT = 80

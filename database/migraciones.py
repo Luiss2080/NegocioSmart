@@ -1,11 +1,11 @@
 """
-Migraciones de Base de Datos - VentaPro
+Migraciones de Base de Datos - NegocioSmart
 =======================================
 
 Maneja las migraciones y actualizaciones de esquema de base de datos.
 Permite evolucionar la estructura sin perder datos.
 
-Autor: Sistema VentaPro
+Autor: Sistema NegocioSmart
 Fecha: 2025-10-04
 """
 
