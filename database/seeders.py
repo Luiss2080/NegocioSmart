@@ -15,6 +15,7 @@ from datetime import datetime, timedelta
 import random
 from typing import List, Dict, Any
 from utils.logger import Logger
+from utils.seguridad import hash_password
 
 class Seeder:
     """Clase base para seeders"""
@@ -260,20 +261,23 @@ class SeederUsuarios(Seeder):
     
     def ejecutar(self) -> bool:
         try:
-            # Nota: En producción, las contraseñas deberían estar hasheadas
+            # Las contraseñas de demostración se hashean con
+            # utils.seguridad.hash_password antes de insertarse: nunca
+            # se guarda texto plano en password_hash, ni siquiera para
+            # datos de prueba.
             usuarios = [
                 ('admin', 'admin123', 'Administrador del Sistema', 'admin@negociosmart.com', 'admin'),
                 ('vendedor1', 'vendedor123', 'Juan Vendedor', 'vendedor1@negociosmart.com', 'vendedor'),
                 ('supervisor1', 'supervisor123', 'María Supervisora', 'supervisor@negociosmart.com', 'supervisor'),
                 ('cajero1', 'cajero123', 'Pedro Cajero', 'cajero1@negociosmart.com', 'vendedor')
             ]
-            
+
             for usuario, password, nombre, email, rol in usuarios:
                 self.connection.execute("""
-                    INSERT OR IGNORE INTO usuarios 
+                    INSERT OR IGNORE INTO usuarios
                     (usuario, password_hash, nombre, email, rol)
                     VALUES (?, ?, ?, ?, ?)
-                """, (usuario, password, nombre, email, rol))
+                """, (usuario, hash_password(password), nombre, email, rol))
             
             return True
         except sqlite3.Error as e:

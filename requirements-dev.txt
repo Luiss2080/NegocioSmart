@@ -1,0 +1,7 @@
+# NegocioSmart - Dependencias de desarrollo/testing
+# ===================================================
+# Instalar además de requirements.txt para correr la suite de tests:
+#   pip install -r requirements.txt -r requirements-dev.txt
+#   pytest
+
+pytest>=7.4.0
