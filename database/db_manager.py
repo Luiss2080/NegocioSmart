@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Optional, List, Dict, Any
 from utils.logger import Logger
 from utils.config_manager import ConfigManager
+from utils.seguridad import hash_password
 
 class DatabaseManager:
     """Gestor principal de la base de datos SQLite"""
@@ -269,11 +270,17 @@ class DatabaseManager:
             VALUES ('GENERAL', 'Cliente General')
         """)
         
-        # Usuario administrador por defecto (si no existe)
-        self.connection.execute("""
+        # Usuario administrador por defecto (si no existe).
+        # La contraseña por defecto sigue siendo 'admin123' (se debe
+        # cambiar tras el primer ingreso), pero ahora se guarda con un
+        # hash PBKDF2-HMAC-SHA256 salado en lugar de texto plano.
+        self.connection.execute(
+            """
             INSERT OR IGNORE INTO usuarios (usuario, password_hash, nombre, rol)
-            VALUES ('admin', 'admin123', 'Administrador', 'admin')
-        """)
+            VALUES (?, ?, 'Administrador', 'admin')
+            """,
+            ('admin', hash_password('admin123')),
+        )
     
     def ejecutar_consulta(self, sql: str, parametros: tuple = ()) -> Optional[List[sqlite3.Row]]:
         """Ejecuta una consulta SELECT y retorna los resultados"""
