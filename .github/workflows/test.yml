@@ -30,6 +30,7 @@ jobs:
     - name: 📦 Install dependencies
       run: |
         pip install -r requirements.txt
+        pip install -r requirements-dev.txt
 
     - name: 🔍 Verify environment
       run: |
@@ -38,6 +39,10 @@ jobs:
     - name: 🧪 Test imports
       run: |
         python -c "import main; print('✅ Main imports successfully')"
+
+    - name: ✅ Run pytest suite
+      run: |
+        pytest -v
 
     - name: 📋 List installed packages
       run: |
