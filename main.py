@@ -4,6 +4,7 @@ from tkinter import messagebox, ttk
 import sys
 import os
 from datetime import datetime, date
+from decimal import Decimal
 import json
 
 # Agregar el directorio actual al path
@@ -19,6 +20,12 @@ try:
     from database.db_manager import DatabaseManager
     from utils.logger import Logger
     from utils.backup_manager import BackupManager
+    from services.ventas_service import (
+        procesar_venta_atomica,
+        StockInsuficienteError,
+        CarritoVacioError,
+        VentaServiceError,
+    )
     db_disponible = True
     logger_disponible = True
     backup_disponible = True
@@ -27,6 +34,10 @@ except ImportError as e:
     DatabaseManager = None
     Logger = None
     BackupManager = None
+    procesar_venta_atomica = None
+    StockInsuficienteError = Exception
+    CarritoVacioError = Exception
+    VentaServiceError = Exception
     db_disponible = False
     logger_disponible = False
     backup_disponible = False
@@ -48,9 +59,25 @@ class VentaProUniversal:
             'idioma': 'es'
         }
         
+        # Conectar con la base de datos real ANTES de cargar el catálogo:
+        # así los productos que ve la interfaz son los mismos que existen
+        # en data/erp.db, con los mismos ids, y una venta se puede
+        # persistir de verdad (antes, el catálogo en memoria y la base de
+        # datos eran dos mundos completamente separados).
+        self.db = None
+        if db_disponible:
+            try:
+                posible_db = DatabaseManager()
+                if posible_db.inicializar_db():
+                    self.db = posible_db
+                else:
+                    print("⚠️ No se pudo inicializar la base de datos, se usarán datos solo en memoria")
+            except Exception as e:
+                print(f"⚠️ Error inicializando base de datos: {e}")
+
         # Inicializar componentes
         self._inicializar_datos()
-        
+
         # Crear ventana principal
         self.root = ctk.CTk()
         self.root.title(f"VentaPro Universal - {self.config_negocio['nombre']}")
@@ -78,18 +105,15 @@ class VentaProUniversal:
     
     def _inicializar_datos(self):
         """Inicializar datos del sistema"""
-        # Productos de ejemplo adaptables a cualquier negocio
-        self.productos = [
-            # Productos generales (aplicables a cualquier negocio)
-            {"id": 1, "nombre": "Producto Ejemplo 1", "precio": 25.99, "stock": 50, "categoria": "General", "codigo": "PRO001"},
-            {"id": 2, "nombre": "Producto Ejemplo 2", "precio": 15.50, "stock": 30, "categoria": "General", "codigo": "PRO002"},
-            {"id": 3, "nombre": "Producto Ejemplo 3", "precio": 45.00, "stock": 20, "categoria": "Premium", "codigo": "PRO003"},
-            
-            # Productos específicos por tipo de negocio
-            {"id": 4, "nombre": "Artículo Especializado", "precio": 89.99, "stock": 15, "categoria": "Especial", "codigo": "ESP001"},
-            {"id": 5, "nombre": "Servicio Básico", "precio": 120.00, "stock": 999, "categoria": "Servicios", "codigo": "SER001"},
-        ]
-        
+        # Catálogo de productos: si hay base de datos disponible, se
+        # siembra (una sola vez) y se carga DESDE la base de datos, para
+        # que los ids que ve/usa la interfaz sean los mismos que existen
+        # en productos.id y una venta se pueda registrar de verdad. Si no
+        # hay base de datos disponible, se cae de vuelta a una lista en
+        # memoria (comportamiento anterior) para que la app siga siendo
+        # utilizable como demo sin persistencia.
+        self.productos = self._cargar_o_sembrar_productos()
+
         self.clientes = [
             {"id": 1, "nombre": "Cliente General", "telefono": "555-0001", "email": "cliente@email.com"},
             {"id": 2, "nombre": "Cliente Frecuente", "telefono": "555-0002", "email": "frecuente@email.com"},
@@ -113,7 +137,86 @@ class VentaProUniversal:
             'clientes_total': len(self.clientes),
             'stock_bajo': len([p for p in self.productos if p['stock'] < 10])
         }
-    
+
+    def _cargar_o_sembrar_productos(self):
+        """Carga el catálogo de productos desde la base de datos real.
+
+        Si la tabla `productos` está vacía (primera vez que se ejecuta
+        la app contra una base de datos nueva), la siembra con el
+        catálogo de ejemplo antes de leerlo, para no dejar la interfaz
+        vacía. A partir de ahí, cada producto que ve/usa la interfaz
+        tiene el mismo id que su fila en `productos`, así que una venta
+        puede descontar stock real y quedar registrada en `ventas` /
+        `detalle_ventas` (ver `_procesar_venta` y
+        `services/ventas_service.py`).
+
+        Si no hay base de datos disponible (self.db es None: falló el
+        import o la conexión), se conserva el comportamiento histórico
+        de una lista en memoria, para que la app siga funcionando como
+        demo sin persistencia.
+        """
+        catalogo_ejemplo = [
+            ("PRO001", "Producto Ejemplo 1", Decimal("15.00"), Decimal("25.99"), 50),
+            ("PRO002", "Producto Ejemplo 2", Decimal("9.00"), Decimal("15.50"), 30),
+            ("PRO003", "Producto Ejemplo 3", Decimal("28.00"), Decimal("45.00"), 20),
+            ("ESP001", "Artículo Especializado", Decimal("55.00"), Decimal("89.99"), 15),
+            ("SER001", "Servicio Básico", Decimal("70.00"), Decimal("120.00"), 999),
+        ]
+
+        if self.db is None or self.db.connection is None:
+            return [
+                {"id": i + 1, "nombre": nombre, "precio": float(precio_venta), "stock": stock,
+                 "categoria": "General", "codigo": codigo}
+                for i, (codigo, nombre, _precio_compra, precio_venta, stock) in enumerate(catalogo_ejemplo)
+            ]
+
+        try:
+            (num_productos,) = self.db.connection.execute(
+                "SELECT COUNT(*) FROM productos WHERE activo = 1"
+            ).fetchone()
+
+            if num_productos == 0:
+                for codigo, nombre, precio_compra, precio_venta, stock in catalogo_ejemplo:
+                    self.db.connection.execute(
+                        """
+                        INSERT OR IGNORE INTO productos
+                            (codigo, nombre, precio_compra, precio_venta, stock_actual, stock_minimo)
+                        VALUES (?, ?, ?, ?, ?, ?)
+                        """,
+                        (codigo, nombre, str(precio_compra), str(precio_venta), stock, 5),
+                    )
+                self.db.connection.commit()
+
+            filas = self.db.connection.execute(
+                """
+                SELECT p.id, p.codigo, p.nombre, p.precio_venta, p.stock_actual,
+                       COALESCE(c.nombre, 'General') AS categoria
+                FROM productos p
+                LEFT JOIN categorias c ON p.categoria_id = c.id
+                WHERE p.activo = 1
+                ORDER BY p.id
+                """
+            ).fetchall()
+
+            return [
+                {
+                    "id": fila["id"],
+                    "nombre": fila["nombre"],
+                    "precio": float(fila["precio_venta"]),
+                    "stock": fila["stock_actual"],
+                    "categoria": fila["categoria"],
+                    "codigo": fila["codigo"],
+                }
+                for fila in filas
+            ]
+        except Exception as e:
+            print(f"⚠️ No se pudo cargar el catálogo desde la base de datos: {e}")
+            return [
+                {"id": i + 1, "nombre": nombre, "precio": float(precio_venta), "stock": stock,
+                 "categoria": "General", "codigo": codigo}
+                for i, (codigo, nombre, _precio_compra, precio_venta, stock) in enumerate(catalogo_ejemplo)
+            ]
+
     def _crear_interfaz(self):
         """Crear interfaz principal CustomTkinter con sidebar"""
         self._crear_interfaz_con_sidebar()
@@ -1561,30 +1664,86 @@ class VentaProUniversal:
         ).pack(pady=20)
     
     def _procesar_venta(self):
-        """Procesar la venta"""
+        """Procesar la venta.
+
+        Antes, esta función sólo tocaba estructuras en memoria: la
+        venta y el descuento de stock desaparecían al cerrar la
+        aplicación, y nada impedía vender más unidades de las que
+        realmente había en existencia (dos ventas seguidas basadas en
+        la misma foto en memoria del stock podían "sobrevender").
+
+        Ahora, si hay base de datos disponible, la venta se procesa con
+        `services.ventas_service.procesar_venta_atomica`, que descuenta
+        el stock y registra la venta + su detalle en una única
+        transacción de SQLite: o se aplica todo (venta y stock
+        coherentes entre sí y con lo que había realmente disponible), o
+        no se aplica nada (stock insuficiente, error de datos, etc.).
+        """
         if not self.carrito:
             messagebox.showwarning("Carrito Vacío", "Agrega productos al carrito antes de procesar la venta")
             return
-        
-        # Simular procesamiento de venta
-        venta_id = len(self.ventas_hoy) + 1
+
+        total_final = self.total_carrito
+        items_vendidos = sum(item['cantidad'] for item in self.carrito)
+
+        if self.db is not None and procesar_venta_atomica is not None:
+            items_venta = [
+                {
+                    "producto_id": item['id'],
+                    "cantidad": item['cantidad'],
+                    "precio_unitario": Decimal(str(item['precio'])),
+                }
+                for item in self.carrito
+            ]
+            try:
+                resultado = procesar_venta_atomica(self.db, items_venta)
+            except StockInsuficienteError as e:
+                messagebox.showerror("Stock insuficiente", str(e))
+                return
+            except CarritoVacioError as e:
+                messagebox.showwarning("Carrito Vacío", str(e))
+                return
+            except VentaServiceError as e:
+                messagebox.showerror(
+                    "Error al procesar la venta",
+                    f"No se pudo registrar la venta en la base de datos:\n{e}\n\n"
+                    "No se cobró ni se descontó stock: la venta se canceló por completo."
+                )
+                return
+
+            # La base de datos es la fuente de verdad: se refleja aquí
+            # el stock restante que realmente quedó tras la venta.
+            for item in self.carrito:
+                for producto in self.productos:
+                    if producto['id'] == item['id'] and item['id'] in resultado.stock_restante:
+                        producto['stock'] = resultado.stock_restante[item['id']]
+                        break
+
+            venta_id = resultado.venta_id
+            total_final = float(resultado.total)
+            folio_venta = resultado.folio
+        else:
+            # Sin base de datos disponible: se conserva el modo demo
+            # (solo en memoria) para que la app siga siendo utilizable,
+            # dejando claro en el mensaje final que no hubo persistencia.
+            venta_id = len(self.ventas_hoy) + 1
+            folio_venta = None
+            for item in self.carrito:
+                for producto in self.productos:
+                    if producto['id'] == item['id']:
+                        producto['stock'] = max(0, producto['stock'] - item['cantidad'])
+                        break
+
         nueva_venta = {
             'id': venta_id,
-            'total': self.total_carrito,
-            'items': sum(item['cantidad'] for item in self.carrito),
+            'total': total_final,
+            'items': items_vendidos,
             'hora': datetime.now().strftime('%H:%M'),
             'cliente': 'Mostrador'
         }
-        
+
         self.ventas_hoy.append(nueva_venta)
-        
-        # Actualizar stock (simulado)
-        for item in self.carrito:
-            for producto in self.productos:
-                if producto['id'] == item['id']:
-                    producto['stock'] -= item['cantidad']
-                    break
-        
+
         # 💾 BACKUP AUTOMÁTICO - Registrar venta procesada
         if self.backup_manager:
             try:
@@ -1605,16 +1764,24 @@ class VentaProUniversal:
                 print(f"⚠️ Error en backup de venta: {e}")
         
         # Actualizar estadísticas
-        self.stats_dia['ventas_total'] += self.total_carrito
+        self.stats_dia['ventas_total'] += total_final
         self.stats_dia['num_ventas'] += 1
         self.stats_dia['items_vendidos'] += nueva_venta['items']
         self.stats_dia['stock_bajo'] = len([p for p in self.productos if p['stock'] < 10])
-        
-        messagebox.showinfo("Venta Procesada", 
+
+        detalle_folio = f"🧾 Folio: {folio_venta}\n" if folio_venta else ""
+        detalle_persistencia = (
+            "💾 Venta guardada en la base de datos\n"
+            if folio_venta else
+            "⚠️ Sin base de datos disponible: venta solo en memoria (no persiste)\n"
+        )
+        messagebox.showinfo("Venta Procesada",
                            f"✅ Venta procesada exitosamente\n\n"
                            f"🧾 Número: {venta_id:03d}\n"
-                           f"💰 Total: {self.config_negocio['moneda']}{self.total_carrito:.2f}\n"
+                           f"{detalle_folio}"
+                           f"💰 Total: {self.config_negocio['moneda']}{total_final:.2f}\n"
                            f"📦 Items: {nueva_venta['items']}\n"
+                           f"{detalle_persistencia}"
                            f"💾 Backup automático creado\n\n"
                            f"¡Gracias por su compra!")
         
