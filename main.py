@@ -11,6 +11,11 @@ import json
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, current_dir)
 
+# Validaciones de datos de negocio (precio, cantidad, etc.). Sin
+# dependencias externas, así que se importa siempre (no es "opcional"
+# como la base de datos o el backup).
+from utils.validadores import Validador
+
 # Configurar CustomTkinter
 ctk.set_appearance_mode("light")
 ctk.set_default_color_theme("blue")
@@ -2504,39 +2509,53 @@ class VentaProUniversal:
         notas_entry.pack(fill="x", padx=15, pady=(0, 20))
         
         def procesar():
-            try:
-                cantidad = int(cantidad_entry.get())
-                tipo = tipo_combo.get()
-                motivo = motivo_combo.get()
-                
-                stock_anterior = producto['stock']
-                
-                if tipo == "Entrada (+)":
-                    producto['stock'] += cantidad
-                elif tipo == "Salida (-)":
-                    producto['stock'] = max(0, producto['stock'] - cantidad)
-                elif tipo == "Ajuste a cantidad exacta":
-                    producto['stock'] = cantidad
-                
-                messagebox.showinfo(
-                    "Ajuste Completado",
-                    f"✅ Stock ajustado exitosamente\n\n"
-                    f"📊 Anterior: {stock_anterior}\n"
-                    f"📊 Actual: {producto['stock']}\n"
-                    f"📝 Motivo: {motivo}"
-                )
-                
-                dialog.destroy()
-                
-                # Refrescar vistas
-                if self.modulo_actual in ["productos", "stock_bajo"]:
-                    if self.modulo_actual == "productos":
-                        self._mostrar_productos()
-                    else:
-                        self._mostrar_stock_bajo()
-                
-            except ValueError:
-                messagebox.showerror("Error", "Ingrese una cantidad válida")
+            # Antes se hacía `int(cantidad_entry.get())` sin más control:
+            # un valor negativo aceptado aquí podía dejar el stock en
+            # negativo directamente (con "Ajuste a cantidad exacta") o
+            # invertir el sentido de una "Entrada (+)" sin que la interfaz
+            # avisara nada. Validador.validar_cantidad ya centraliza las
+            # reglas correctas (rechaza negativos, formatos inválidos y
+            # valores absurdamente grandes) y se reutiliza aquí en vez de
+            # duplicar esa lógica.
+            valido, mensaje, cantidad = Validador.validar_cantidad(cantidad_entry.get())
+            if not valido:
+                messagebox.showerror("Error", mensaje)
+                return
+
+            tipo = tipo_combo.get()
+            motivo = motivo_combo.get()
+
+            if tipo in ("Entrada (+)", "Salida (-)") and cantidad == 0:
+                messagebox.showerror("Error", "La cantidad del movimiento debe ser mayor a 0")
+                return
+
+            stock_anterior = producto['stock']
+
+            if tipo == "Entrada (+)":
+                producto['stock'] += cantidad
+            elif tipo == "Salida (-)":
+                producto['stock'] = max(0, producto['stock'] - cantidad)
+            elif tipo == "Ajuste a cantidad exacta":
+                # cantidad ya está garantizada >= 0 por validar_cantidad,
+                # así que un "ajuste exacto" nunca puede dejar stock negativo.
+                producto['stock'] = cantidad
+
+            messagebox.showinfo(
+                "Ajuste Completado",
+                f"✅ Stock ajustado exitosamente\n\n"
+                f"📊 Anterior: {stock_anterior}\n"
+                f"📊 Actual: {producto['stock']}\n"
+                f"📝 Motivo: {motivo}"
+            )
+
+            dialog.destroy()
+
+            # Refrescar vistas
+            if self.modulo_actual in ["productos", "stock_bajo"]:
+                if self.modulo_actual == "productos":
+                    self._mostrar_productos()
+                else:
+                    self._mostrar_stock_bajo()
         
         # Botones
         buttons_frame = ctk.CTkFrame(form_frame, fg_color="transparent")
@@ -3244,18 +3263,35 @@ class VentaProUniversal:
                 messagebox.showerror("Error", "El stock inicial es obligatorio")
                 return
             
-            precio = float(precio_str)
-            stock = int(stock_str)
-            costo = float(self.producto_costo.get() or 0)
-            
-            if precio <= 0:
+            # Antes se hacía `float(precio_str)` / `int(stock_str)` sin
+            # pasar por Validador: un precio con más de 2 decimales, un
+            # costo negativo, o un valor absurdamente grande se
+            # aceptaban sin más (float() no los rechaza). Validador ya
+            # implementa esas reglas con Decimal, así que se reutiliza
+            # aquí para precio, costo y stock en vez de duplicarlas.
+            valido, mensaje, precio_decimal = Validador.validar_precio(precio_str)
+            if not valido:
+                messagebox.showerror("Error", f"Precio de venta: {mensaje}")
+                return
+            if precio_decimal <= 0:
                 messagebox.showerror("Error", "El precio debe ser mayor a 0")
                 return
-                
-            if stock < 0:
-                messagebox.showerror("Error", "El stock no puede ser negativo")
+
+            valido, mensaje, stock_validado = Validador.validar_cantidad(stock_str)
+            if not valido:
+                messagebox.showerror("Error", f"Stock inicial: {mensaje}")
                 return
-            
+
+            costo_str = self.producto_costo.get().strip() or "0"
+            valido, mensaje, costo_decimal = Validador.validar_precio(costo_str)
+            if not valido:
+                messagebox.showerror("Error", f"Costo de compra: {mensaje}")
+                return
+
+            precio = float(precio_decimal)
+            stock = stock_validado
+            costo = float(costo_decimal)
+
             # Crear nuevo producto
             nuevo_producto = {
                 'id': len(self.productos) + 1,
