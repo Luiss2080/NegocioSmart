@@ -1,4 +1,4 @@
-# 🚀 VentaPro Universal - Guía de Instalación y Uso
+# 🚀 NegocioSmart - Guía de Instalación y Uso
 
 ## 📋 Requisitos del Sistema
 
@@ -34,7 +34,7 @@ python main.py
 
 ### Paso 1: Clonar/Descargar el Proyecto
 ```bash
-git clone https://github.com/tuusuario/NegocioSmart.git
+git clone https://github.com/Luiss2080/NegocioSmart.git
 cd NegocioSmart
 ```
 
@@ -123,18 +123,18 @@ NegocioSmart/
 ### Cambiar Tema de la Aplicación
 Edita `config.ini`:
 ```ini
-[APARIENCIA]
-tema = dark  # light, dark, system
-color_primario = blue  # blue, green, dark-blue
+[APPLICATION]
+theme = modern
+language = es
 ```
 
 ### Configurar Base de Datos
 Edita `config.ini`:
 ```ini
-[BASE_DATOS]
-nombre = erp.db
-ruta = data/
-backup_automatico = true
+[DATABASE]
+db_path = data/erp.db
+backup_enabled = true
+backup_interval = 24
 ```
 
 ---
@@ -155,7 +155,7 @@ Los errores se guardan automáticamente en:
 
 ## 🔄 Actualización
 
-### Para actualizar VentaPro:
+### Para actualizar NegocioSmart:
 1. Respalda tu base de datos (`data/erp.db`)
 2. Descarga la nueva versión
 3. Ejecuta: `pip install -r requirements.txt`
@@ -180,9 +180,9 @@ python main.py
 
 ### Salida Esperada:
 ```
-🌍 Iniciando VentaPro Universal - Sistema para TODO tipo de negocio...
+🌍 Iniciando NegocioSmart - Sistema para TODO tipo de negocio...
 ✅ Base de datos inicializada correctamente
-🚀 VentaPro Universal iniciado correctamente
+🚀 NegocioSmart iniciado correctamente
 🎯 Sistema adaptable a cualquier tipo de negocio
 ```
 
@@ -190,7 +190,7 @@ python main.py
 
 ## 🎯 ¡Listo para Usar!
 
-Si ves el mensaje de inicio exitoso, **¡VentaPro está funcionando correctamente!**
+Si ves el mensaje de inicio exitoso, **¡NegocioSmart está funcionando correctamente!**
 
 La aplicación se abrirá en una ventana gráfica donde podrás:
 - Gestionar productos
@@ -198,4 +198,4 @@ La aplicación se abrirá en una ventana gráfica donde podrás:
 - Ver reportes
 - Administrar clientes
 
-**¡Disfruta usando VentaPro Universal!** 🎉
+**¡Disfruta usando NegocioSmart!** 🎉

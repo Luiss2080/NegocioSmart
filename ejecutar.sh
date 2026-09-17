@@ -1,8 +1,8 @@
 #!/bin/bash
-# VentaPro Universal - Ejecutor para Linux/Mac
+# NegocioSmart - Ejecutor para Linux/Mac
 # ============================================
 
-echo "🚀 Iniciando VentaPro Universal..."
+echo "🚀 Iniciando NegocioSmart..."
 
 # Verificar si existe el entorno virtual
 if [ ! -d ".venv" ]; then
@@ -19,5 +19,5 @@ echo "🔍 Verificando dependencias..."
 python verificar_entorno.py
 
 # Ejecutar aplicación
-echo "🎯 Ejecutando VentaPro Universal..."
+echo "🎯 Ejecutando NegocioSmart..."
 python main.py

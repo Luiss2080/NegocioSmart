@@ -1,11 +1,11 @@
 """
-Dashboard Principal - VentaPro
+Dashboard Principal - NegocioSmart
 =============================
 
 Panel de control principal con estadísticas, gráficos y resumen
 del estado del negocio en tiempo real.
 
-Autor: Sistema VentaPro
+Autor: Sistema NegocioSmart
 Fecha: 2025-10-04
 """
 

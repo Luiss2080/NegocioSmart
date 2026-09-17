@@ -1,11 +1,11 @@
 """
-Validadores - VentaPro
+Validadores - NegocioSmart
 ======================
 
 Funciones de validación para datos del sistema.
 Valida emails, teléfonos, códigos, precios, etc.
 
-Autor: Sistema VentaPro
+Autor: Sistema NegocioSmart
 Fecha: 2025-10-04
 """
 

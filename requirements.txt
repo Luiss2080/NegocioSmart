@@ -1,4 +1,4 @@
-# VentaPro Universal - Dependencias del Sistema
+# NegocioSmart - Dependencias del Sistema
 # ============================================
 
 # Interfaz Gráfica Moderna

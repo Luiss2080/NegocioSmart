@@ -1,2 +1,2 @@
 # Database Package
-# Gestión de Base de Datos para VentaPro
+# Gestión de Base de Datos para NegocioSmart

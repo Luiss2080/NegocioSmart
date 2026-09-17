@@ -1,10 +1,10 @@
 """
-Módulo de Ventas - VentaPro
+Módulo de Ventas - NegocioSmart
 ===========================
 
 Interfaz para el registro y gestión de ventas.
 
-Autor: Sistema VentaPro
+Autor: Sistema NegocioSmart
 Fecha: 2025-10-04
 """
 

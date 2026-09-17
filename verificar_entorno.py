@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-Script de verificación del entorno VentaPro Universal
+Script de verificación del entorno NegocioSmart
 Verifica que todas las dependencias estén correctamente instaladas
 """
 
 def verificar_entorno():
     """Verificar que el entorno esté correctamente configurado"""
     
-    print("🔍 Verificando entorno VentaPro Universal...")
+    print("🔍 Verificando entorno NegocioSmart...")
     print("=" * 50)
     
     # Verificar librerías críticas
@@ -34,7 +34,7 @@ def verificar_entorno():
     
     if todas_ok:
         print("🎉 ¡ENTORNO COMPLETAMENTE FUNCIONAL!")
-        print("📋 VentaPro Universal listo para ejecutar")
+        print("📋 NegocioSmart listo para ejecutar")
         return True
     else:
         print("⚠️  Hay dependencias faltantes")

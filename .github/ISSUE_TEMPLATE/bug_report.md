@@ -26,7 +26,7 @@ Si aplica, agrega capturas de pantalla para explicar tu problema.
 ## 💻 **Información del Sistema**
  - OS: [ej. Windows 11, Ubuntu 22.04, macOS 13]
  - Versión de Python: [ej. 3.11.5]
- - Versión de VentaPro: [ej. 1.0.0]
+ - Versión de NegocioSmart: [ej. 1.0.0]
 
 ## 📋 **Información Adicional**
 - ¿Instalaste usando el instalador automático?

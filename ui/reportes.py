@@ -1,10 +1,10 @@
 """
-Módulo de Reportes - VentaPro
+Módulo de Reportes - NegocioSmart
 =============================
 
 Interfaz para generación y visualización de reportes.
 
-Autor: Sistema VentaPro
+Autor: Sistema NegocioSmart
 Fecha: 2025-10-04
 """
 

@@ -1,11 +1,11 @@
 """
-Seeders - Datos de Prueba e Iniciales - VentaPro
+Seeders - Datos de Prueba e Iniciales - NegocioSmart
 ================================================
 
 Proporciona datos de prueba y configuración inicial para el sistema.
 Útil para desarrollo, testing y demostración.
 
-Autor: Sistema VentaPro
+Autor: Sistema NegocioSmart
 Fecha: 2025-10-04
 """
 

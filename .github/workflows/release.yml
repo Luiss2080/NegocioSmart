@@ -1,4 +1,4 @@
-name: 🚀 Release VentaPro Universal
+name: 🚀 Release NegocioSmart
 
 on:
   push:
@@ -38,7 +38,7 @@ jobs:
       id: release_notes
       run: |
         echo "RELEASE_NOTES<<EOF" >> $GITHUB_OUTPUT
-        echo "## 🎉 VentaPro Universal ${{ steps.version.outputs.VERSION }}" >> $GITHUB_OUTPUT
+        echo "## 🎉 NegocioSmart ${{ steps.version.outputs.VERSION }}" >> $GITHUB_OUTPUT
         echo "" >> $GITHUB_OUTPUT
         echo "### ✨ Nuevas Características:" >> $GITHUB_OUTPUT
         echo "- Sistema de gestión comercial universal" >> $GITHUB_OUTPUT
@@ -66,7 +66,7 @@ jobs:
     - name: 📦 Create release archive
       run: |
         # Crear archivo ZIP excluyendo archivos innecesarios
-        zip -r "VentaPro-Universal-${{ steps.version.outputs.VERSION }}.zip" . \
+        zip -r "NegocioSmart-Universal-${{ steps.version.outputs.VERSION }}.zip" . \
           -x "*.git*" "*/__pycache__/*" "*.pyc" ".venv/*" "data/erp.db" "logs/*"
 
     - name: 🚀 Create GitHub Release
@@ -76,7 +76,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ steps.version.outputs.VERSION }}
-        release_name: 🏪 VentaPro Universal ${{ steps.version.outputs.VERSION }}
+        release_name: 🏪 NegocioSmart ${{ steps.version.outputs.VERSION }}
         body: ${{ steps.release_notes.outputs.RELEASE_NOTES }}
         draft: false
         prerelease: false
@@ -87,8 +87,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./VentaPro-Universal-${{ steps.version.outputs.VERSION }}.zip
-        asset_name: VentaPro-Universal-${{ steps.version.outputs.VERSION }}.zip
+        asset_path: ./NegocioSmart-Universal-${{ steps.version.outputs.VERSION }}.zip
+        asset_name: NegocioSmart-Universal-${{ steps.version.outputs.VERSION }}.zip
         asset_content_type: application/zip
 
     - name: 📤 Upload Windows installer

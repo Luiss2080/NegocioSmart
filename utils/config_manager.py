@@ -1,11 +1,11 @@
 """
-Gestor de Configuración - VentaPro
+Gestor de Configuración - NegocioSmart
 =================================
 
 Maneja la configuración del sistema desde archivos INI y base de datos.
 Proporciona acceso centralizado a todas las configuraciones.
 
-Autor: Sistema VentaPro
+Autor: Sistema NegocioSmart
 Fecha: 2025-10-04
 """
 
@@ -48,9 +48,9 @@ class ConfigManager:
                 'max_backups': '30'
             },
             'APPLICATION': {
-                'app_name': 'VentaPro',
+                'app_name': 'NegocioSmart',
                 'app_version': '1.0.0',
-                'window_title': 'VentaPro - Sistema de Gestión de Ventas',
+                'window_title': 'NegocioSmart - Sistema de Gestión de Ventas',
                 'theme': 'modern',
                 'language': 'es',
                 'debug_mode': 'false'
@@ -134,7 +134,7 @@ class ConfigManager:
     
     def get_app_name(self) -> str:
         """Obtiene el nombre de la aplicación"""
-        return self.get('APPLICATION', 'app_name', 'VentaPro')
+        return self.get('APPLICATION', 'app_name', 'NegocioSmart')
     
     def get_app_version(self) -> str:
         """Obtiene la versión de la aplicación"""
@@ -142,7 +142,7 @@ class ConfigManager:
     
     def get_window_title(self) -> str:
         """Obtiene el título de la ventana"""
-        return self.get('APPLICATION', 'window_title', 'VentaPro')
+        return self.get('APPLICATION', 'window_title', 'NegocioSmart')
     
     def is_debug_mode(self) -> bool:
         """Verifica si está en modo debug"""

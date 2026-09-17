@@ -1,2 +1,2 @@
 # UI Package
-# Interfaces Gráficas para VentaPro
+# Interfaces Gráficas para NegocioSmart

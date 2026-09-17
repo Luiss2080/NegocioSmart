@@ -1,5 +1,5 @@
 """
-VentaPro Universal - Módulo Avanzado de Reportes y Analytics
+NegocioSmart - Módulo Avanzado de Reportes y Analytics
 ==========================================================
 
 Sistema completo de reportes inteligentes con gráficos, análisis predictivo
@@ -15,7 +15,7 @@ Características:
 - ✅ Comparativas períodos anteriores
 - ✅ Alertas de rendimiento
 
-Autor: VentaPro Universal
+Autor: NegocioSmart
 Fecha: 2025-01-04
 """
 
@@ -1037,7 +1037,7 @@ def integrar_con_sistema_principal(main_app, generador_reportes):
 if __name__ == "__main__":
     # Demo independiente
     root = ctk.CTk()
-    root.title("VentaPro Universal - Reportes y Analytics")
+    root.title("NegocioSmart - Reportes y Analytics")
     root.geometry("1400x900")
     
     generador = crear_generador_reportes()

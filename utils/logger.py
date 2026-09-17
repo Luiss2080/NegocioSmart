@@ -1,11 +1,11 @@
 """
-Sistema de Logging - VentaPro
+Sistema de Logging - NegocioSmart
 ============================
 
 Maneja todos los logs del sistema con niveles, rotación y formateo.
 Registra actividades, errores y eventos importantes.
 
-Autor: Sistema VentaPro
+Autor: Sistema NegocioSmart
 Fecha: 2025-10-04
 """
 
@@ -21,7 +21,7 @@ from colorama import Fore, Back, Style
 colorama.init(autoreset=True)
 
 class Logger:
-    """Sistema de logging avanzado para VentaPro"""
+    """Sistema de logging avanzado para NegocioSmart"""
     
     def __init__(self, log_file: str = "logs/app.log", log_level: str = "INFO"):
         self.log_file = log_file
@@ -31,7 +31,7 @@ class Logger:
         os.makedirs(os.path.dirname(self.log_file), exist_ok=True)
         
         # Configurar logger
-        self.logger = logging.getLogger('VentaPro')
+        self.logger = logging.getLogger('NegocioSmart')
         self.logger.setLevel(getattr(logging, self.log_level, logging.INFO))
         
         # Evitar duplicación de handlers

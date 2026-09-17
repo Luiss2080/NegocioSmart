@@ -1,4 +1,4 @@
-# 🔐 Política de Seguridad - VentaPro Universal
+# 🔐 Política de Seguridad - NegocioSmart
 
 ## 🛡️ **Versiones Soportadas**
 
@@ -14,9 +14,9 @@ Actualmente damos soporte de seguridad a las siguientes versiones:
 Si descubres una vulnerabilidad de seguridad, por favor **NO la reportes públicamente**. En su lugar:
 
 ### 📧 **Contacto Privado**
-- **Email:** security@ventapro-universal.com
+- **Email:** security@negociosmart-universal.com
 - **GitHub:** [@Luiss2080](https://github.com/Luiss2080) (mensaje privado)
-- **Asunto:** `[SEGURIDAD] Vulnerabilidad en VentaPro Universal`
+- **Asunto:** `[SEGURIDAD] Vulnerabilidad en NegocioSmart`
 
 ### 📋 **Información a Incluir**
 1. **Descripción detallada** de la vulnerabilidad
@@ -49,7 +49,7 @@ Si descubres una vulnerabilidad de seguridad, por favor **NO la reportes públic
 
 ## 🗃️ **Datos Sensibles**
 
-### 📊 **Qué Datos Maneja VentaPro**
+### 📊 **Qué Datos Maneja NegocioSmart**
 - ✅ **Información de productos** (nombres, precios, stock)
 - ✅ **Datos de clientes** (nombres, contactos, historial)
 - ✅ **Transacciones de ventas** (fechas, montos, métodos de pago)
@@ -73,12 +73,23 @@ chmod 640 config.ini         # Configuración protegida
 chmod 600 logs/app.log       # Logs solo para owner
 ```
 
-### 🔒 **Variables de Entorno**
-```bash
-# Configuración segura (opcional)
-export VENTAPRO_DB_PATH="./data/erp.db"
-export VENTAPRO_LOG_LEVEL="INFO"
-export VENTAPRO_BACKUP_ENCRYPT="true"
+### 🔒 **Configuración vía `config.ini`**
+NegocioSmart no lee variables de entorno: toda la configuración vive en
+`config.ini` (ver `utils/config_manager.py`). Las claves relevantes
+para seguridad son:
+```ini
+[DATABASE]
+db_path = data/erp.db
+backup_enabled = true
+
+[LOGGING]
+log_level = INFO
+
+[SECURITY]
+enable_login = false
+session_timeout = 3600
+password_min_length = 6
+enable_backup_encryption = false
 ```
 
 ## 🚨 **Vulnerabilidades Conocidas**
@@ -124,7 +135,7 @@ Reconocemos a las personas que reportan vulnerabilidades responsablemente:
 
 ## 📞 **Contacto de Seguridad**
 
-- 🔒 **Email Seguro:** security@ventapro-universal.com
+- 🔒 **Email Seguro:** security@negociosmart-universal.com
 - 🐛 **Issues Públicos:** [GitHub Issues](https://github.com/Luiss2080/NegocioSmart/issues) (solo para bugs no relacionados con seguridad)
 - 💬 **Discusiones:** [GitHub Discussions](https://github.com/Luiss2080/NegocioSmart/discussions)
 
