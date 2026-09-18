@@ -1,152 +1,160 @@
-# 🏪 NegocioSmart
-
-> Sistema de punto de venta e inventario de escritorio, en Python + SQLite,
-> para pequeños negocios (tiendas, ferreterías, farmacias, boutiques) que
-> necesitan cobrar, controlar stock y ver reportes básicos sin depender de
-> internet ni de una suscripción mensual: todo corre y se guarda en la propia
-> computadora.
-
 <div align="center">
-
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python)](https://python.org)
-[![CustomTkinter](https://img.shields.io/badge/CustomTkinter-5.2%2B-green?style=for-the-badge)](https://github.com/TomSchimansky/CustomTkinter)
-[![SQLite](https://img.shields.io/badge/SQLite-3-orange?style=for-the-badge&logo=sqlite)](https://sqlite.org)
-[![Tests](https://img.shields.io/badge/tests-pytest-informational?style=for-the-badge)](tests)
-[![License](https://img.shields.io/badge/License-MIT%20%2B%20terms-red?style=for-the-badge)](LICENSE)
-
+  <img src="docs/assets/logo.svg" width="96" alt="Logo de NegocioSmart" />
+  <h1>NegocioSmart</h1>
+  <p><b>Punto de venta e inventario de escritorio, offline y sin suscripción, para pequeños negocios.</b></p>
+  <img src="https://img.shields.io/badge/estado-MVP-orange?style=for-the-badge" alt="Estado: MVP" />
+  <img src="https://img.shields.io/badge/python-3.8%2B-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.8+" />
+  <img src="https://img.shields.io/badge/customtkinter-%E2%89%A55.2-green?style=for-the-badge" alt="CustomTkinter 5.2+" />
+  <img src="https://img.shields.io/badge/sqlite-3-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite" />
+  <img src="https://img.shields.io/badge/tests-37%20pasan-brightgreen?style=for-the-badge" alt="37 tests pasan" />
+  <img src="https://github.com/Luiss2080/NegocioSmart/actions/workflows/test.yml/badge.svg" alt="CI" />
+  <img src="https://img.shields.io/badge/licencia-MIT%20%2B%20t%C3%A9rminos-red?style=for-the-badge" alt="Licencia MIT con términos adicionales" />
+  <p>
+    <a href="#-inicio-rápido">Inicio rápido</a> ·
+    <a href="#-características">Características</a> ·
+    <a href="#-arquitectura">Arquitectura</a> ·
+    <a href="#-pruebas">Pruebas</a> ·
+    <a href="#-lo-que-todavía-no-existe">Limitaciones</a>
+  </p>
 </div>
 
----
+NegocioSmart es una aplicación de escritorio (Python + CustomTkinter + SQLite) para cobrar, controlar
+stock y ver reportes básicos en una sola computadora, sin internet. Es un **MVP de un solo usuario**:
+la venta atómica y la matemática de dinero están cubiertas por tests, pero no hay login activo,
+facturación real ni exportación a PDF/Excel.
 
-## Características
+## 🎬 Vista rápida
 
-Verificadas contra el código real (no aspiracionales):
+No hay capturas: la interfaz es de escritorio (CustomTkinter) y no se pudo renderizar sin una sesión
+gráfica interactiva. Flujo principal, tal como lo implementa `main.py`:
 
-- **🛒 Punto de venta (POS)**: carrito con búsqueda de productos, cálculo de
-  totales, y **persistencia real y atómica en SQLite**: una venta descuenta
-  stock y queda registrada en `ventas`/`detalle_ventas` en una sola
-  transacción, o no se aplica nada (ver `services/ventas_service.py`). La
-  base de datos —no la interfaz— es quien decide si hay stock suficiente,
-  así que no es posible vender más unidades de las que existen.
-- **📦 Inventario y productos**: alta/edición de productos, categorías,
-  ajuste de stock (entrada, salida o ajuste a cantidad exacta) con
-  validación de cantidades y precios (rechaza negativos, formatos
-  inválidos y precios con más de 2 decimales), alertas de stock bajo.
-- **👥 Clientes y proveedores**: alta rápida de clientes, historial de
-  compras por cliente, módulo dedicado de proveedores.
-- **📊 Reportes básicos**: resumen de ventas del día, historial, estadísticas
-  generales e inventario por categoría, con respaldo automático a JSON/CSV
-  en cada operación (`utils/backup_manager.py`). El módulo de reportes
-  avanzado (`modules/reportes.py`) agrega más tipos de análisis, aunque hoy
-  usa datos de demostración y su exportación a PDF está simulada — no un
-  export real todavía.
-- **⚙️ Configuración centralizada**: nombre y datos del negocio, moneda,
-  tasa de impuesto, umbral de stock bajo, etc. se editan en `config.ini`
-  (`utils/config_manager.py`), sin tocar código.
-- **💾 Backups automáticos**: cada venta, producto nuevo o reporte generado
-  se respalda también como JSON/CSV en `data/backups/`.
-
-### Seguridad y correctitud (lo que se auditó y corrigió)
-
-- **Sin inyección SQL**: todas las consultas de `database/consultas.py` usan
-  parámetros ligados (`?`), nunca interpolación de texto.
-- **Contraseñas hasheadas**: `usuarios.password_hash` usa PBKDF2-HMAC-SHA256
-  con sal aleatoria (`utils/seguridad.py`), no texto plano.
-- **Matemática de dinero con `Decimal`**, nunca `float`: totales, descuentos
-  e impuestos se calculan y redondean a centavos de forma exacta, con
-  descuentos siempre limitados al importe que descuentan (nunca dan un
-  total negativo).
-- **Sin sobreventa**: el descuento de stock usa una actualización
-  condicionada (`WHERE stock_actual >= cantidad`) dentro de una transacción
-  que se revierte por completo si cualquier línea del carrito no tiene
-  stock suficiente.
-
-### Qué NO incluye todavía (para ser honestos)
-
-- No hay pantalla de login: la tabla `usuarios` y sus roles existen, pero
-  `enable_login = false` por defecto y la interfaz no pide credenciales.
-- Es una app de un solo usuario/proceso en una sola computadora: la base de
-  datos SQLite (`data/erp.db`) no está protegida ni cifrada en disco; para
-  un equipo compartido, protege el archivo a nivel de sistema operativo.
-- Exportar reportes a PDF real y a Excel no está implementado (las
-  dependencias `reportlab`/`openpyxl` están listadas pero no se usan
-  todavía); sí funciona la exportación a JSON/CSV.
-
-## Cómo usar
-
-1. Ejecuta la aplicación (`python main.py`). La primera vez crea
-   `data/erp.db`, siembra un catálogo de ejemplo y abre el dashboard.
-2. Ve a **Punto de Venta** para armar un carrito y presionar
-   **Procesar Venta**: la venta y el descuento de stock quedan guardados de
-   verdad en la base de datos.
-3. Ve a **Productos** para dar de alta artículos, ajustar stock o revisar
-   alertas de stock bajo.
-4. Ve a **Clientes**/**Proveedores** para administrarlos, y a **Reportes**
-   para ver el resumen del día.
-5. Ajusta nombre del negocio, moneda, impuesto y demás en **Configuración**
-   (o editando `config.ini` directamente).
-
-## Instalación y uso local
-
-```bash
-# 1. Clonar el repositorio
-git clone https://github.com/Luiss2080/NegocioSmart.git
-cd NegocioSmart
-
-# 2. Crear y activar un entorno virtual
-python -m venv .venv
-# Windows:
-.venv\Scripts\activate
-# Linux/Mac:
-source .venv/bin/activate
-
-# 3. Instalar dependencias
-pip install -r requirements.txt
-
-# 4. (Opcional) Verificar que el entorno está completo
-python verificar_entorno.py
-
-# 5. Ejecutar la aplicación
+```text
 python main.py
-# En Linux/Mac también puedes usar:
-./ejecutar.sh
+ |
+ |- 1ª vez: crea data/erp.db, siembra un catálogo de ejemplo
+ |- Menú lateral: Dashboard | Productos | Punto de Venta | Clientes | Reportes | Configuración | Usuarios | Salir
+ `- Punto de Venta: buscar producto -> carrito -> "Procesar Venta"
+      -> una transacción SQLite descuenta stock y registra ventas + detalle_ventas
+         (si una línea no tiene stock, no se aplica nada)
 ```
 
-Requiere Python 3.8 o superior. No necesita un servidor de base de datos
-aparte: SQLite viene incluido en la librería estándar de Python.
+## ✨ Características
 
-## Tecnologías
+| Característica | Detalle |
+|---|---|
+| Punto de venta | Carrito con búsqueda de productos y totales. `services/ventas_service.py::procesar_venta_atomica` descuenta stock y registra venta y detalle en **una sola transacción**; el `UPDATE ... WHERE stock_actual >= cantidad` impide sobreventa. |
+| Dinero exacto | Totales, descuentos e impuestos con `decimal.Decimal`, redondeo a centavos; los descuentos nunca superan el importe descontado. |
+| Inventario | Alta/edición de productos y categorías, ajuste de stock (entrada, salida, cantidad exacta), validación de cantidades y precios, alertas de stock bajo. |
+| Clientes y proveedores | Alta de clientes con historial de compras; módulo de proveedores en `modules/proveedores.py`. |
+| Reportes | Resumen del día, historial y estadísticas; respaldo JSON/CSV en `data/backups/` (`utils/backup_manager.py`). |
+| Configuración | Negocio, moneda, impuesto, umbral de stock bajo, etc. en `config.ini`. |
+| Contraseñas | `usuarios.password_hash` con PBKDF2-HMAC-SHA256 y sal aleatoria (`utils/seguridad.py`). |
+| Consultas SQL | `database/consultas.py` usa parámetros ligados (`?`). |
 
-- **Python 3.8+** con **CustomTkinter** para la interfaz gráfica.
-- **SQLite3** (librería estándar) como base de datos, vía
-  `database/db_manager.py`.
-- **`decimal.Decimal`** (librería estándar) para toda la matemática de
-  dinero — nunca `float`.
-- **pandas / matplotlib / reportlab / openpyxl / Pillow**: dependencias
-  listadas para análisis y exportación avanzada; hoy sólo `matplotlib` se
-  importa en el módulo de reportes avanzado, y no todavía para renderizar
-  gráficos activos.
-- **pytest** para la suite de tests automatizados.
-- **GitHub Actions** para CI (matriz Windows/Linux/macOS × Python 3.8–3.12,
-  lint con flake8, chequeo de seguridad con bandit/safety/pip-audit, y la
-  suite de pytest).
+## 🏗️ Arquitectura
 
-## Tests
+```mermaid
+flowchart TD
+    main["main.py<br/>NegocioSmartApp (POS)"] --> ui["ui/*<br/>dashboard, productos, clientes,<br/>reportes, configuración, usuarios"]
+    main --> svc["services/ventas_service.py<br/>procesar_venta_atomica"]
+    svc --> db["database/db_manager.py<br/>DatabaseManager"]
+    ui --> db
+    db --> sqlite[("SQLite data/erp.db<br/>categorias, productos, clientes,<br/>ventas, detalle_ventas, usuarios,<br/>configuracion, logs")]
+    main --> util["utils/<br/>config_manager, backup_manager,<br/>seguridad, validadores, logger"]
+    util --> cfg["config.ini"]
+    util --> bk["data/backups/ JSON y CSV"]
+```
+
+## 🚀 Inicio rápido
+
+| Requisito | Detalle |
+|---|---|
+| Python | 3.8 o superior (CI: 3.8 a 3.12 en Linux, Windows y macOS) |
+| Base de datos | SQLite, incluida en la librería estándar |
+| Dependencias | `requirements.txt` (customtkinter, matplotlib, pandas, Pillow, etc.) |
+
+```bash
+git clone https://github.com/Luiss2080/NegocioSmart.git
+cd NegocioSmart
+python -m venv .venv
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+python verificar_entorno.py    # opcional: comprueba que el entorno esté completo
+python main.py
+```
+
+> La aplicación gráfica no se ejecutó al preparar este README (CustomTkinter no estaba instalado);
+> los tests sí se ejecutaron.
+
+<details>
+<summary>Estructura de carpetas</summary>
+
+```text
+main.py                 Aplicación principal (POS y ventanas)
+ui/                     dashboard, productos, ventas, clientes, reportes, configuración, usuarios
+modules/                inventario, proveedores, reportes (avanzado, con datos demo)
+services/               ventas_service (venta atómica)
+database/               db_manager, consultas, migraciones, modelos, seeders
+utils/                  config_manager, backup_manager, seguridad, validadores, logger, constantes
+tests/                  test_money_math, test_ventas_service, test_consultas_sql, test_seguridad, test_validadores
+config.ini              Configuración del negocio (moneda MXN, impuesto 0.16 por defecto)
+docs/, INSTALACION.md, CONTRIBUTING.md, SECURITY.md, CHANGELOG.md
+```
+
+</details>
+
+<details>
+<summary>Configuración (config.ini)</summary>
+
+Secciones presentes: `DATABASE`, `APPLICATION`, `BUSINESS`, `INVOICE`, `REPORTS`, `SECURITY`,
+`INVENTORY`, `POS`, `LOGGING`, `UI`, `NOTIFICATIONS`, `BACKUP`, `DEVELOPMENT`. Los valores por
+defecto son de ejemplo (`Mi Negocio`, `MXN`, `tax_rate = 0.16`); no todas las claves tienen efecto
+en el código. No pongas credenciales reales en `config.ini` (la sección `NOTIFICATIONS` trae campos
+de correo vacíos).
+
+</details>
+
+## 🧪 Pruebas
 
 ```bash
 pip install -r requirements.txt -r requirements-dev.txt
 pytest -v
 ```
 
-La suite cubre las áreas de mayor riesgo para un punto de venta: matemática
-de dinero con `Decimal` (incluyendo descuentos del 100%, descuentos mayores
-al importe, cantidades negativas/cero), el servicio de ventas atómico
-(sobreventa, carritos mixtos con una línea sin stock, ventas secuenciales),
-seguridad de las consultas SQL parametrizadas, y hashing de contraseñas.
+**37 tests** (verificado: 37 passed) sobre las zonas de mayor riesgo: matemática de dinero
+(descuentos del 100 %, mayores al importe, cantidades negativas o cero), venta atómica (sobreventa,
+carritos mixtos con una línea sin stock, ventas seguidas), consultas SQL parametrizadas, hashing de
+contraseñas y validadores. Los tests de base de datos usan un SQLite real temporal. La CI
+(`.github/workflows/test.yml`) corre la suite en Linux, Windows y macOS con Python 3.8 a 3.12, más
+flake8 y comprobaciones de seguridad (bandit, safety y pip-audit; bandit y pip-audit no
+bloquean el resultado).
 
-## Licencia
+## 🔒 Seguridad
 
-MIT, con algunos términos adicionales para uso comercial (atribución
-sugerida pero no obligatoria, sin garantía sobre errores de cálculo, etc.)
-— por eso GitHub puede mostrarla como "Other" en vez de "MIT" a secas. Ver
-el archivo [`LICENSE`](LICENSE) completo para el texto exacto.
+- Consultas parametrizadas y contraseñas con PBKDF2-HMAC-SHA256 y sal.
+- `enable_login = false` por defecto: **la interfaz no pide credenciales** aunque exista la tabla
+  `usuarios`.
+- `data/erp.db` no está cifrada; en un equipo compartido protégela a nivel de sistema operativo.
+- Política de reporte de vulnerabilidades en [`SECURITY.md`](SECURITY.md).
+
+## 🚧 Lo que todavía no existe
+
+- Pantalla de login y control de acceso por rol en la interfaz.
+- Exportación real a PDF y Excel: `reportlab` y `openpyxl` están declaradas, pero sin uso. El módulo
+  `modules/reportes.py` trabaja con datos de demostración y su PDF está simulado; sí funciona el
+  respaldo JSON/CSV.
+- Gráficos activos: `matplotlib` se importa en el módulo de reportes avanzado, pero no dibuja
+  gráficos reales.
+- Multiusuario o multi-equipo: es una sola app sobre un archivo SQLite local.
+- Facturación fiscal, impresión de tickets y lector de códigos de barras: hay claves en
+  `config.ini` (`INVOICE`, `POS`), sin funcionalidad completa que las respalde.
+- `main.py` es un archivo monolítico de casi 4000 líneas; la lógica separada en `services/`,
+  `database/` y `utils/` es la parte con tests.
+
+## 📄 Licencia
+
+MIT con términos adicionales para uso comercial (atribución sugerida, sin garantía sobre cálculos,
+redistribución con la licencia). Por eso GitHub puede mostrarla como "Other". Texto completo en
+[`LICENSE`](LICENSE).
+
+<div align="center"><sub>Hecho por Luiss2080 · Python + CustomTkinter + SQLite</sub></div>
