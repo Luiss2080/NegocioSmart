@@ -612,67 +612,6 @@ class NegocioSmartApp:
         """Navegación anterior (deshabilitada)"""
         # Esta función se mantiene por compatibilidad pero no se usa
         return
-        
-        # Botones de navegación principales organizados en dos filas
-        nav_buttons_fila1 = [
-            ("🏠 Dashboard", self._mostrar_dashboard, "#1f538d"),
-            ("📦 Catálogo", self._mostrar_productos, "#28a745"),
-            ("🛒 Caja/POS", self._mostrar_pos, "#007bff"),
-            ("👥 CRM Clientes", self._mostrar_clientes, "#6f42c1"),
-            ("📊 Estadísticas", self._mostrar_reportes, "#fd7e14")
-        ]
-        
-        nav_buttons_fila2 = [
-            ("🏢 Compras", self._mostrar_compras, "#8e44ad"),
-            ("📋 Stock Control", self._mostrar_stock_control, "#e74c3c"),
-            ("📈 Business Intel", self._mostrar_business_intel, "#16a085"),
-            ("⚙️ Configuración", self._mostrar_configuracion, "#6c757d")
-        ]
-        
-        # Contenedor principal centrado
-        nav_container = ctk.CTkFrame(nav_frame, fg_color="transparent")
-        nav_container.pack(expand=True, fill="both")
-        
-        # Primera fila de botones (centrada)
-        button_frame1 = ctk.CTkFrame(nav_container, fg_color="transparent", height=50)
-        button_frame1.pack(pady=(15, 5))
-        
-        for i, (texto, comando, color) in enumerate(nav_buttons_fila1):
-            btn = ctk.CTkButton(
-                button_frame1,
-                text=texto,
-                width=220,
-                height=40,
-                fg_color=color,
-                command=comando,
-                font=ctk.CTkFont(size=12, weight="bold"),
-                corner_radius=8
-            )
-            btn.grid(row=0, column=i, padx=8, pady=5)
-        
-        # Segunda fila de botones (centrada)
-        button_frame2 = ctk.CTkFrame(nav_container, fg_color="transparent", height=50)
-        button_frame2.pack(pady=(5, 15))
-        
-        for i, (texto, comando, color) in enumerate(nav_buttons_fila2):
-            btn = ctk.CTkButton(
-                button_frame2,
-                text=texto,
-                width=220,
-                height=40,
-                fg_color=color,
-                command=comando,
-                font=ctk.CTkFont(size=12, weight="bold"),
-                corner_radius=8
-            )
-            # Centrar los 4 botones de la segunda fila
-            btn.grid(row=0, column=i, padx=8, pady=5)
-            
-        # Configurar columnas para centrado responsivo
-        for i in range(5):
-            button_frame1.grid_columnconfigure(i, weight=1)
-        for i in range(4):
-            button_frame2.grid_columnconfigure(i, weight=1)
     
     def _crear_footer(self):
         """Crear footer con estado del sistema"""
