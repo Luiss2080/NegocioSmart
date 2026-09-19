@@ -125,9 +125,9 @@ pytest -v
 (descuentos del 100 %, mayores al importe, cantidades negativas o cero), venta atómica (sobreventa,
 carritos mixtos con una línea sin stock, ventas seguidas), consultas SQL parametrizadas, hashing de
 contraseñas y validadores. Los tests de base de datos usan un SQLite real temporal. La CI
-(`.github/workflows/test.yml`) corre la suite en Linux, Windows y macOS con Python 3.8 a 3.12, más
-flake8 y comprobaciones de seguridad (bandit, safety y pip-audit; bandit y pip-audit no
-bloquean el resultado).
+(`.github/workflows/test.yml`) corre la suite en Linux, Windows y macOS con Python 3.9 a 3.12 (matplotlib>=3.9 exige 3.9+), más
+flake8 y comprobaciones de seguridad (bandit y pip-audit; `safety check` se retiró porque exige login
+desde safety 3.x, y bandit y la salida JSON de pip-audit no bloquean).
 
 ## 🔒 Seguridad
 

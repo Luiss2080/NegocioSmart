@@ -9,10 +9,14 @@ on:
 jobs:
   test:
     runs-on: ${{ matrix.os }}
+    env:
+      # Los scripts imprimen emojis; en Windows la consola por defecto es cp1252.
+      PYTHONUTF8: '1'
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: [3.8, 3.9, 3.10, 3.11, 3.12]
+        python-version: ['3.9', '3.10', '3.11', '3.12']
+      fail-fast: false
 
     steps:
     - name: 📥 Checkout repository
@@ -96,10 +100,11 @@ jobs:
 
     - name: 🔒 Install security tools
       run: |
-        pip install safety bandit pip-audit
+        pip install bandit pip-audit
 
     - name: 🛡️ Check for security vulnerabilities
       run: |
-        safety check
+        # 'safety check' exige login desde safety 3.x (exit 64); pip-audit no.
+        pip-audit -r requirements.txt
         bandit -r . -f json || true
-        pip-audit --desc --format=json || true
+        pip-audit --desc --format=json -r requirements.txt || true
